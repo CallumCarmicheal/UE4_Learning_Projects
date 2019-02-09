@@ -11,11 +11,10 @@ class UPrimitiveComponent;
 class UStaticMeshComponent;
 
 UCLASS()
-class FPSGAME_API AFPSBlackhole : public AActor
-{
+class FPSGAME_API AFPSBlackhole : public AActor {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AFPSBlackhole();
 
@@ -24,22 +23,22 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UStaticMeshComponent* MeshComp;
+		UStaticMeshComponent* MeshComp;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	USphereComponent* InnerSphereComponent;
+		USphereComponent* InnerSphereComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	USphereComponent* OuterSphereComponent;
+		USphereComponent* OuterSphereComponent;
 
 	UFUNCTION()
-	void OverlapInnerSphere(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+		void OverlapInnerSphere(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditInstanceOnly, Category = "Blackhole")
-	bool IsEnabled;
-	
+		bool IsEnabled;
+
 };

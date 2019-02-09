@@ -9,42 +9,41 @@
 #include "Engine/GameEngine.h"
 
 // Sets default values
-AFPSBlackhole::AFPSBlackhole()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+AFPSBlackhole::AFPSBlackhole() {
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Physical Viewport Mesh
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	RootComponent = MeshComp;
 
+	// Deletion Sphere
 	InnerSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("InnerSphereComp"));
 	InnerSphereComponent->SetSphereRadius(100);
 	InnerSphereComponent->SetupAttachment(MeshComp);
 	InnerSphereComponent->OnComponentBeginOverlap.AddDynamic(this, &AFPSBlackhole::OverlapInnerSphere);
-	
+
+	// Attraction Spehere
 	OuterSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("OuterSphereComp"));
 	OuterSphereComponent->SetSphereRadius(3000);
 	OuterSphereComponent->SetupAttachment(MeshComp);
 }
 
 // Called when the game starts or when spawned
-void AFPSBlackhole::BeginPlay()
-{
+void AFPSBlackhole::BeginPlay() {
 	Super::BeginPlay();
-	
 }
 
-void AFPSBlackhole::OverlapInnerSphere(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, 
-	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
+void AFPSBlackhole::OverlapInnerSphere(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+
 	if (OtherActor)
 		OtherActor->Destroy();
 }
 
 // Called every frame
-void AFPSBlackhole::Tick(float DeltaTime)
-{
+void AFPSBlackhole::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
 	// Find all overlapping components that can collide and may be physically simulating

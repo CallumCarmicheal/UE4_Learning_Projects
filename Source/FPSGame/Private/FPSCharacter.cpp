@@ -8,7 +8,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/GameEngine.h"
 
-
 AFPSCharacter::AFPSCharacter() {
 	// Create a CameraComponent	
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
@@ -29,7 +28,6 @@ AFPSCharacter::AFPSCharacter() {
 	GunMeshComponent->SetupAttachment(Mesh1PComponent, "GripPoint");
 }
 
-
 void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 	// set up gameplay key bindings
 	check(PlayerInputComponent);
@@ -43,7 +41,6 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 }
-
 
 void AFPSCharacter::Fire() {
 	// try and fire a projectile
@@ -77,14 +74,12 @@ void AFPSCharacter::Fire() {
 	}
 }
 
-
 void AFPSCharacter::MoveForward(float Value) {
 	if (Value != 0.0f) {
 		// add movement in that direction
 		AddMovementInput(GetActorForwardVector(), Value);
 	}
 }
-
 
 void AFPSCharacter::MoveRight(float Value) {
 	if (Value != 0.0f) {
