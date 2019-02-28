@@ -13,8 +13,10 @@ UCLASS()
 class AFPSProjectile : public AActor {
 	GENERATED_BODY()
 
-protected:
+public:
+	AFPSProjectile();
 
+protected:
 	/** Sphere collision component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
 		USphereComponent* CollisionComp;
@@ -27,10 +29,7 @@ protected:
 		UParticleSystem* ExplosionEffect;
 
 public:
-
-	AFPSProjectile();
-
-	/** called when projectile hits something */
+	/** Called when projectile hits something */
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 

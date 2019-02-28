@@ -2,7 +2,6 @@
 
 #include "FPSObjectiveActor.h"
 #include "FPSCharacter.h"
-
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"

@@ -9,8 +9,7 @@
 class UTexture2D;
 
 UCLASS()
-class AFPSHUD : public AHUD
-{
+class AFPSHUD : public AHUD {
 	GENERATED_BODY()
 
 protected:
@@ -19,7 +18,6 @@ protected:
 	UTexture2D* CrosshairTex;
 
 public:
-
 	AFPSHUD();
 
 	/** Primary draw call for the HUD */

@@ -7,13 +7,21 @@
 #include "FPSGameMode.generated.h"
 
 UCLASS()
-class AFPSGameMode : public AGameModeBase
-{
+class AFPSGameMode : public AGameModeBase {
 	GENERATED_BODY()
 
-public:
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Spectator")
+		TSubclassOf<AActor> SpectatingViewpointClass;
 
+public:
 	AFPSGameMode();
+
+	void CompleteMission(APawn* InstigatorPawn);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "GameMode")
+		void OnMissionCompleted(APawn* InstigatorPawn);
+
 };
 
 
