@@ -5,6 +5,7 @@
 #include "FPSCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameVersion.generated.h"
 
 AFPSGameMode::AFPSGameMode()
 {
@@ -14,6 +15,14 @@ AFPSGameMode::AFPSGameMode()
 
 	// use our custom HUD class
 	HUDClass = AFPSHUD::StaticClass();
+
+	// Set our build information (for use in blueprints)
+	VersionMajor = BUILD_MAJOR_VERSION;
+	VersionMinor = BUILD_MINOR_VERSION;
+	VersionPatch = BUILD_PATCH_VERSION;
+	BuildNumber = BUILD_BUILD_NUMBER;
+	BuildDate = FString(TEXT(BUILD_BUILD_DATE));
+	BuildTime = FString(TEXT(BUILD_BUILD_TIME));
 }
 
 void AFPSGameMode::CompleteMission(APawn* InstigatorPawn) {
