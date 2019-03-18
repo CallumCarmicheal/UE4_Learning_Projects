@@ -13,6 +13,7 @@ AFPSLaunchPad::AFPSLaunchPad() {
 	OverlapComp = CreateDefaultSubobject<UBoxComponent>(TEXT("OverlapComp"));
 	OverlapComp->SetBoxExtent(FVector(75, 75, 50));
 	OverlapComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
 	RootComponent = OverlapComp;
 
 	// Base mesh
