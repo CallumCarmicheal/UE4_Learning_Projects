@@ -33,7 +33,7 @@ void AFPSAIGuard::BeginPlay() {
 // Called every frame
 void AFPSAIGuard::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 /**

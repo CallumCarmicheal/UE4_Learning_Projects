@@ -37,9 +37,12 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics()) {
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 
-		Destroy();
+		//Destroy();
 	}
 
 	if (ExplosionEffect)
 		UGameplayStatics::SpawnEmitterAtLocation(this, ExplosionEffect, GetActorLocation());
+
+	MakeNoise(1.0f, Instigator);
+	Destroy();
 }

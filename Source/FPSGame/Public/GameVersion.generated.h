@@ -6,6 +6,6 @@
 #define BUILD_PATCH_VERSION 0
 
 // Build 
-#define BUILD_BUILD_NUMBER 49
+#define BUILD_BUILD_NUMBER 50
 #define BUILD_BUILD_DATE "Friday, 08 November 2019"
-#define BUILD_BUILD_TIME "04:51:08"
+#define BUILD_BUILD_TIME "16:39:37"
