@@ -100,8 +100,8 @@ public class FPSGameEditorTarget : TargetRules {
         }
     }
 
-    class IniFile   // revision 11
-    {
+    // revision 11
+    class IniFile {
         string Path;
 
         [DllImport("kernel32", CharSet = CharSet.Unicode)]

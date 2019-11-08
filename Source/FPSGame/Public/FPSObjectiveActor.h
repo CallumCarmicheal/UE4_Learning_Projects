@@ -31,6 +31,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 		UParticleSystem* PickupFX;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "GameMode")
+		void OnPickup(APawn* InstigatorPawn);
+
 public:
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };

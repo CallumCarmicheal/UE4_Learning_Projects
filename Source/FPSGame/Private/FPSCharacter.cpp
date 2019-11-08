@@ -2,11 +2,14 @@
 
 #include "FPSCharacter.h"
 #include "FPSProjectile.h"
+
+#include "Kismet/GameplayStatics.h"
+#include "Engine/GameEngine.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Kismet/GameplayStatics.h"
-#include "Engine/GameEngine.h"
+#include "Components/PawnNoiseEmitterComponent.h"
+
 
 AFPSCharacter::AFPSCharacter() {
 	// Create a CameraComponent	
@@ -26,6 +29,9 @@ AFPSCharacter::AFPSCharacter() {
 	GunMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
 	GunMeshComponent->CastShadow = false;
 	GunMeshComponent->SetupAttachment(Mesh1PComponent, "GripPoint");
+
+	// Create noise emitter component
+	NoiseEmitterComponent = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("NoiseEmitter"));
 }
 
 void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
