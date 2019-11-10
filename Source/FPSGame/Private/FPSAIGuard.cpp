@@ -74,7 +74,6 @@ void AFPSAIGuard::OnNoiseHeard(APawn* NoiseInvestigator, const FVector& Location
 	GetWorldTimerManager().SetTimer(TimerHandle_ResetOrientation, this, &AFPSAIGuard::ResetOrientation, 3.0f);
 }
 
-void AFPSAIGuard::ResetOrientation()
-{
+void AFPSAIGuard::ResetOrientation() {
 	SetActorRotation(OriginalRotation);
 }
