@@ -25,7 +25,7 @@ AFPSGameMode::AFPSGameMode()
 	BuildTime = FString(TEXT(BUILD_BUILD_TIME));
 }
 
-void AFPSGameMode::CompleteMission(APawn* InstigatorPawn) {
+void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess) {
 	UE_LOG(LogTemp, Log, TEXT("GameMode, CompleteMission called"));
 
 	// If we have a valid pawn
@@ -57,5 +57,5 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn) {
 	}
 
 	// Invoke the blueprint event.
-	OnMissionCompleted(InstigatorPawn);
+	OnMissionCompleted(InstigatorPawn, bMissionSuccess);
 }

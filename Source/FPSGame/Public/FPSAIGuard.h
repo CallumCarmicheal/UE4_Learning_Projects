@@ -31,6 +31,14 @@ protected:
 	void OnNoiseHeard(APawn* NoiseInvestigator, const FVector& Location, float Volume);
 
 	virtual void PostInitializeComponents();
+
+
+	FTimerHandle TimerHandle_ResetOrientation;
+	FRotator OriginalRotation;
+
+	UFUNCTION()
+	void ResetOrientation();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
