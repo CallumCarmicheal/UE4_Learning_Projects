@@ -2,9 +2,9 @@
 
 #include "FPSCharacter.h"
 #include "FPSProjectile.h"
+#include "AFPSEngineUtility.h"
 
 #include "Kismet/GameplayStatics.h"
-#include "Engine/GameEngine.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -62,7 +62,7 @@ void AFPSCharacter::Fire() {
 		// spawn the projectile at the muzzle
 		GetWorld()->SpawnActor<AFPSProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, ActorSpawnParams);
 	} else {
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow,
+		AFPSEngineUtility::AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow,
 			FString::Printf(TEXT("%s: No projectile!"), *GetName()));
 	}
 

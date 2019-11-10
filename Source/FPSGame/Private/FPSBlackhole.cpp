@@ -5,8 +5,6 @@
 #include "Components/SphereComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "Engine/World.h"
-#include "Engine/GameEngine.h"
 
 // Sets default values
 AFPSBlackhole::AFPSBlackhole() {
@@ -24,7 +22,7 @@ AFPSBlackhole::AFPSBlackhole() {
 	InnerSphereComponent->SetupAttachment(MeshComp);
 	InnerSphereComponent->OnComponentBeginOverlap.AddDynamic(this, &AFPSBlackhole::OverlapInnerSphere);
 
-	// Attraction Spehere
+	// Attraction Sphere
 	OuterSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("OuterSphereComp"));
 	OuterSphereComponent->SetSphereRadius(3000);
 	OuterSphereComponent->SetupAttachment(MeshComp);
