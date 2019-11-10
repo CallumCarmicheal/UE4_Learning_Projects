@@ -27,6 +27,8 @@ protected:
 		FString BuildDate;
 	UPROPERTY(BlueprintReadOnly, Category = "Build")
 		FString BuildTime;
+	UPROPERTY(BlueprintReadOnly, Category = "Build")
+		FString GitHash;
 
 public:
 	AFPSGameMode();

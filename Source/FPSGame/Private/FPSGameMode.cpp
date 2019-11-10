@@ -23,6 +23,8 @@ AFPSGameMode::AFPSGameMode()
 	BuildNumber = BUILD_BUILD_NUMBER;
 	BuildDate = FString(TEXT(BUILD_BUILD_DATE));
 	BuildTime = FString(TEXT(BUILD_BUILD_TIME));
+	GitHash = FString(TEXT(BUILD_GIT_HASH));
+
 }
 
 void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess) {
@@ -36,7 +38,7 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess) 
 
 		// Check if the spectating class was set.
 		if (SpectatingViewpointClass) {
-			// Find all AActors of specating class
+			// Find all AActors of spectating class
 			TArray<AActor*> ReturnedActors;
 			UGameplayStatics::GetAllActorsOfClass(this, SpectatingViewpointClass, ReturnedActors);
 
