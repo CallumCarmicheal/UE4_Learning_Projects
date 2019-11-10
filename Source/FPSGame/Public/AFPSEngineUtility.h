@@ -10,6 +10,9 @@
 class FPSGAME_API AFPSEngineUtility
 {
 public:
-	AFPSEngineUtility();
-	~AFPSEngineUtility();
+	/** Add a FString to the On-screen debug message system. bNewerOnTop only works with Key == INDEX_NONE */
+	static void AddOnScreenDebugMessage(uint64 Key, float TimeToDisplay, FColor DisplayColor, const FString& DebugMessage, bool bNewerOnTop = true, const FVector2D& TextScale = FVector2D::UnitVector);
+
+	/** Add a FString to the On-screen debug message system. bNewerOnTop only works with Key == INDEX_NONE */
+	static void AddOnScreenDebugMessage(int32 Key, float TimeToDisplay, FColor DisplayColor, const FString& DebugMessage, bool bNewerOnTop = true, const FVector2D& TextScale = FVector2D::UnitVector);
 };
