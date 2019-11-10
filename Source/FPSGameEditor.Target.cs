@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Tools.DotNETCommon;
 using System.Runtime.InteropServices;
 
@@ -16,6 +17,8 @@ public class FPSGameEditorTarget : TargetRules {
 
         IncrementalBuildNumber(Target);
     }
+
+
 
     private void IncrementalBuildNumber(TargetInfo Target) {
         string MODULE_NAME = "FPSGame";
@@ -33,30 +36,63 @@ public class FPSGameEditorTarget : TargetRules {
             throw new BuildException("Failed to read meta file, generated default at " + GAME_META_FILE + ".generated");
         }
 
+        string gitHash = getGitHash();
+
         // Increment build number and set date
         meta.BuildNumber++;
         meta.BuildDate = DateTime.Now.ToString("dddd, dd MMMM yyyy");
         meta.BuildTime = DateTime.Now.ToString("HH:mm:ss");
+        meta.GitHash = gitHash;
         meta.Write(GAME_META_FILE);
 
-        System.Console.WriteLine("New build number generated: " + meta.BuildNumber + " @ " + meta.BuildDate + " - " + meta.BuildTime);
+
+        System.Console.WriteLine(
+            "New build number generated: " 
+            + meta.BuildNumber + " @ " + meta.BuildDate + " - " + meta.BuildTime 
+            + " # " + gitHash);
 
         // Write the header file
-        string headerFileGenerated = 
-          "/** DO NOT MODIFY THIS FILE, ITS IS AUTOMATICALLY GENERATED ON EACH BUILD! **/" 
-        + "\n"
-        + "\n"
-        + "// Version numbers \n"
-        + "#define BUILD_MAJOR_VERSION " + meta.Major + "\n"
-        + "#define BUILD_MINOR_VERSION " + meta.Minor + "\n"
-        + "#define BUILD_PATCH_VERSION " + meta.Patch + "\n"
-        + "\n"
-        + "// Build \n"
-        + "#define BUILD_BUILD_NUMBER " + meta.BuildNumber + "\n"
-        + "#define BUILD_BUILD_DATE \"" + meta.BuildDate + "\"\n"
-        + "#define BUILD_BUILD_TIME \"" + meta.BuildTime + "\"\n";
+        string headerFileGenerated =
+            "/** DO NOT MODIFY THIS FILE, ITS IS AUTOMATICALLY GENERATED ON EACH BUILD! **/"
+            + "\n"
+            + "\n"
+            + "// Version numbers\n"
+            + "#define BUILD_MAJOR_VERSION " + meta.Major + "\n"
+            + "#define BUILD_MINOR_VERSION " + meta.Minor + "\n"
+            + "#define BUILD_PATCH_VERSION " + meta.Patch + "\n"
+            + "\n"
+            + "// Build\n"
+            + "#define BUILD_BUILD_NUMBER " + meta.BuildNumber + "\n"
+            + "#define BUILD_BUILD_DATE \"" + meta.BuildDate + "\"\n"
+            + "#define BUILD_BUILD_TIME \"" + meta.BuildTime + "\"\n"
+            + "\n"
+            + "// Git\n"
+            + "#define BUILD_GIT_HASH \"" + gitHash + "\"\n"
+        ;
 
         System.IO.File.WriteAllText(GAME_VERSION_FILE, headerFileGenerated);
+    }
+
+    private string getGitHash() {
+        string output = "";
+
+        var p = new Process {
+            StartInfo = new ProcessStartInfo {
+                FileName = "git",
+                Arguments = "rev-parse --short HEAD",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true,
+                WorkingDirectory = this.ProjectFile.Directory.FullName
+            }
+        };
+
+        p.Start();
+        while (!p.StandardOutput.EndOfStream)
+            output += p.StandardOutput.ReadLine() + "\n";
+
+
+        return output.Remove(output.Length - 1);
     }
 
     class MetaInformation {
@@ -67,7 +103,7 @@ public class FPSGameEditorTarget : TargetRules {
         public uint BuildNumber;
         public string BuildDate;
         public string BuildTime;
-
+        public string GitHash;
 
         public void Read(string file) {
             var i = new IniFile(file);
@@ -97,6 +133,7 @@ public class FPSGameEditorTarget : TargetRules {
             i.Write("BuildNumber", "" + BuildNumber, "Build");
             i.Write("BuildDate", "" + BuildDate, "Build");
             i.Write("BuildTime", "" + BuildTime, "Build");
+            i.Write("GitHash", "" + GitHash, "Build");
         }
     }
 
