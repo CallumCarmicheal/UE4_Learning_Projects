@@ -3,7 +3,9 @@
 #include "FPSGameState.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
+
 #include "GameVersion.generated.h"
+#include "FPSPlayerController.h"
 
 
 AFPSGameState::AFPSGameState() {
@@ -17,12 +19,16 @@ AFPSGameState::AFPSGameState() {
 	GitHash		 = FString(TEXT(BUILD_GIT_HASH));
 }
 
-void AFPSGameState::MulticastOnMissionComplete_Implementation(APawn* InstigatorPawn, bool bMissionSuccess) {
-	for (auto it = AActor::GetWorld()->GetPawnIterator(); it; it++) {
-		APawn* Pawn = it->Get();
+void AFPSGameState::MulticastOnMissionCompleted_Implementation(APawn* InstigatorPawn, bool bMissionSuccess) {
+	for (FConstPlayerControllerIterator it = GetWorld()->GetPlayerControllerIterator(); it; it++) {
+		AFPSPlayerController* PC = Cast<AFPSPlayerController>(it->Get());
+		if (PC && PC->IsLocalController()) {
+			PC->OnMissionCompleted(InstigatorPawn, bMissionSuccess);
 
-		if (Pawn && Pawn->IsLocallyControlled()) {
-			Pawn->DisableInput(nullptr);
+			// Disable input's
+			APawn* MyPawn = PC->GetPawn();
+			if (MyPawn)
+				MyPawn->DisableInput(PC);
 		}
 	}
 }
