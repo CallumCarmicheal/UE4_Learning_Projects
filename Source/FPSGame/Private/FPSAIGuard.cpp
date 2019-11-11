@@ -6,7 +6,7 @@
 
 #include "Perception/PawnSensingComponent.h"
 #include "DrawDebugHelpers.h"
-
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AFPSAIGuard::AFPSAIGuard() {
@@ -83,7 +83,6 @@ void AFPSAIGuard::OnNoiseHeard(APawn* NoiseInvestigator, const FVector& Location
 	GetWorldTimerManager().SetTimer(TimerHandle_ResetOrientation, this, &AFPSAIGuard::ResetOrientation, 3.0f);
 
 	SetGuardState(EAIState::Suspicious);
-
 }
 
 void AFPSAIGuard::ResetOrientation() {
@@ -94,9 +93,19 @@ void AFPSAIGuard::ResetOrientation() {
 	SetGuardState(EAIState::Idle);
 }
 
+void AFPSAIGuard::OnRep_GuardState() {
+	OnGuardStateChanged(GuardState);
+}
+
 void AFPSAIGuard::SetGuardState(EAIState NewState) {
 	if (GuardState == NewState) return;
 
 	GuardState = NewState;
-	OnGuardStateChanged(NewState);
+	OnRep_GuardState();
+}
+
+void AFPSAIGuard::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AFPSAIGuard, GuardState);
 }
