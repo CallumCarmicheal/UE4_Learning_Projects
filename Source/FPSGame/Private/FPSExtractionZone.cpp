@@ -38,7 +38,10 @@ void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent * OverlappedComponent
 	if (MyPawn->bIsCarryingObjective) {
 		// Invoke complete mission
 		AFPSGameMode* GM = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
-		GM->CompleteMission(MyPawn, true);
+
+		if (GM)
+			GM->CompleteMission(MyPawn, true);
+		//else { UE_LOG(LogTemp, Log, TEXT("FPSExtractionZone: Failed to cast gamemode!")); }
 	}
 
 	else {
