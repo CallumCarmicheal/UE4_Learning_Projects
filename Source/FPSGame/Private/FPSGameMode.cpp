@@ -5,6 +5,8 @@
 #include "FPSCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "FPSGameState.h"
+
 #include "GameVersion.generated.h"
 
 AFPSGameMode::AFPSGameMode()
@@ -13,18 +15,9 @@ AFPSGameMode::AFPSGameMode()
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/Blueprints/BP_Player"));
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
-	// use our custom HUD class
+	// Set our custom gamemode classes
 	HUDClass = AFPSHUD::StaticClass();
-
-	// Set our build information (for use in blueprints)
-	VersionMajor = BUILD_MAJOR_VERSION;
-	VersionMinor = BUILD_MINOR_VERSION;
-	VersionPatch = BUILD_PATCH_VERSION;
-	BuildNumber = BUILD_BUILD_NUMBER;
-	BuildDate = FString(TEXT(BUILD_BUILD_DATE));
-	BuildTime = FString(TEXT(BUILD_BUILD_TIME));
-	GitHash = FString(TEXT(BUILD_GIT_HASH));
-
+	GameStateClass = AFPSGameState::StaticClass();
 }
 
 void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess) {
@@ -58,6 +51,12 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess) 
 		}
 	}
 
+	// Invoke the Multicast Mission Complete event
+	AFPSGameState* GS = GetGameState<AFPSGameState>();
+	if (GS) {
+		GS->MulticastOnMissionComplete(InstigatorPawn, bMissionSuccess);
+	}
+	
 	// Invoke the blueprint event.
 	OnMissionCompleted(InstigatorPawn, bMissionSuccess);
 }
