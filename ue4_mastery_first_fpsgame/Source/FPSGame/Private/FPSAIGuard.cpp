@@ -73,7 +73,7 @@ void AFPSAIGuard::OnNoiseHeard(APawn* NoiseInvestigator, const FVector& Location
 	FVector Direction = Location - GetActorLocation();
 	Direction.Normalize();
 
-	FRotator NewLookAt = FRotationMatrix::MakeFromX(Direction).Rotator();
+	FRotator NewLookAt = FRotationMatrix::MakeFromX(Direction).Rotator().GetInverse();
 	NewLookAt.Pitch = 0.00f;
 	NewLookAt.Roll = 0.00f;
 
