@@ -38,4 +38,4 @@ but can be changed through editing [FPSGameEditor.Target.cs](/Source/FPSGameEdit
 ![Version Blueprint](resources/ue4_mastery_first_fpsgame.version_info_example.PNG "Blueprint for showing Version on UI")
 
 ### Pulsating Material with Properties
-![Pulsating Material with Properties](/resources/ue4_mastery_first_fpsgame.customizable_pulsing_material.PNG "Pulsating Material with Properties")
+![Pulsating Material with Properties](resources/ue4_mastery_first_fpsgame.customizable_pulsing_material.PNG "Pulsating Material with Properties")
