@@ -16,7 +16,7 @@ ue4_mastery_second_tpscoop	|	ue4mtc	|	This is the second ever game I have create
 Commit Project Id's 
 CID = Commit Id, If a commit is prefixed with this it means its addressing a commit for this project specifically.
 
-| CID | Project Name |
-:----:|:----:
-ue4mf	| [ue4_mastery_first_fpsgame](ue4_mastery_first_fpsgame/) (UE4 Mastery FPS)
-ue4mtc	|	[ue4_mastery_second_tpscoop](ue4_mastery_second_tpscoop/) (UE4 Mastery TPS Coop)
+| CID | Acronym | Project Name |
+:----:|:----:|:----:
+ue4mf	| ***UE4*** ***M***astery ***F***PS | [ue4_mastery_first_fpsgame](ue4_mastery_first_fpsgame/)
+ue4mtc	| ***UE4*** ***M***astery ***T***PS **C**oop | [ue4_mastery_second_tpscoop](ue4_mastery_second_tpscoop/)
