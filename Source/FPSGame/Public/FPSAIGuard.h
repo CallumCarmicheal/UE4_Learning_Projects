@@ -49,14 +49,13 @@ protected:
 	void OnNoiseHeard(APawn* NoiseInvestigator, const FVector& Location, float Volume);
 
 	// Setup our component events
-	void PostInitializeComponents() override;
-	
+	virtual void PostInitializeComponents() override;
+
 	FTimerHandle TimerHandle_ResetOrientation;
 	FRotator OriginalRotation;
-
+	
 	UFUNCTION()
 	void ResetOrientation();
-
 
 	EAIState GuardState;
 	void SetGuardState(EAIState NewState);

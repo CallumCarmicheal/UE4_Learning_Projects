@@ -29,20 +29,25 @@ AFPSProjectile::AFPSProjectile() {
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
+	// Replicate to th clients (MP Net code)
+	SetReplicates(true);
+	SetReplicateMovement(true);
 }
 
 
 void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
 	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics()) {
+	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 
-		//Destroy();
-	}
-
+	// Display any explosion effects
 	if (ExplosionEffect)
 		UGameplayStatics::SpawnEmitterAtLocation(this, ExplosionEffect, GetActorLocation());
 
-	MakeNoise(1.0f, Instigator);
-	Destroy();
+	// Check if we are the server
+	if (Role == ROLE_Authority) {
+		MakeNoise(1.0f, Instigator);
+		Destroy();
+	}
 }

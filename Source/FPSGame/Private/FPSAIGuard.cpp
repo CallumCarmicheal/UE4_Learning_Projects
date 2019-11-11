@@ -50,8 +50,9 @@ void AFPSAIGuard::Tick(float DeltaTime) {
  */
 void AFPSAIGuard::OnPawnSeen(APawn* SeenPawn) {
 	if (SeenPawn == nullptr) return;
+//	if (GuardState == EAIState::Alerted) return;
 
-	AFPSEngineUtility::AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow,
+	AFPSEngineUtility::AddOnScreenDebugMessage(-1, 1, FColor::Yellow,
 		FString::Printf(TEXT("FPSAIGuard: %s Noticed character %s!"), *GetName(), *SeenPawn->GetName()));
 
 	DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 32.0f, 12, FColor::Red, false, 10.0f);

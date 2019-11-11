@@ -42,7 +42,7 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess) 
 			TArray<AActor*> ReturnedActors;
 			UGameplayStatics::GetAllActorsOfClass(this, SpectatingViewpointClass, ReturnedActors);
 
-			// Change viewtargets if any valid actor is found
+			// Change view targets if any valid actor is found
 			if (ReturnedActors.Num() > 0) {
 				AActor* NewViewTarget = ReturnedActors[0];
 				APlayerController* PC = Cast<APlayerController>(InstigatorPawn->GetController());

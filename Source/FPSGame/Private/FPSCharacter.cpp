@@ -48,24 +48,21 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 }
 
-void AFPSCharacter::Fire() {
-	// try and fire a projectile
-	if (ProjectileClass) {
-		FVector MuzzleLocation = GunMeshComponent->GetSocketLocation("Muzzle");
-		FRotator MuzzleRotation = GunMeshComponent->GetSocketRotation("Muzzle");
+void AFPSCharacter::Tick(float DeltaTime) {
+	Super::Tick(DeltaTime);
 
-		//Set Spawn Collision Handling Override
-		FActorSpawnParameters ActorSpawnParams;
-		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-		ActorSpawnParams.Instigator = this;
-
-		// spawn the projectile at the muzzle
-		GetWorld()->SpawnActor<AFPSProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, ActorSpawnParams);
-	} else {
-		AFPSEngineUtility::AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow,
-			FString::Printf(TEXT("%s: No projectile!"), *GetName()));
+	// Check if we are simulated.
+	if (!IsLocallyControlled()) {
+		// Update the clients view pitch
+		FRotator newRot = CameraComponent->RelativeRotation;
+		newRot.Pitch = RemoteViewPitch * 360.0f / 255.0f;
+		
+		CameraComponent->SetRelativeRotation(newRot);
 	}
+}
 
+void AFPSCharacter::Fire() {
+	ServerFire();
 	// try and play the sound if specified
 	if (FireSound) {
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
@@ -79,6 +76,29 @@ void AFPSCharacter::Fire() {
 			AnimInstance->PlaySlotAnimationAsDynamicMontage(FireAnimation, "Arms", 0.0f);
 		}
 	}
+}
+
+void AFPSCharacter::ServerFire_Implementation() {
+	// try and fire a projectile
+	if (ProjectileClass) {
+		const auto muzzleLocation = GunMeshComponent->GetSocketLocation("Muzzle");
+		const auto muzzleRotation = GunMeshComponent->GetSocketRotation("Muzzle");
+
+		//Set Spawn Collision Handling Override
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+		ActorSpawnParams.Instigator = this;
+
+		// spawn the projectile at the muzzle
+		GetWorld()->SpawnActor<AFPSProjectile>(ProjectileClass, muzzleLocation, muzzleRotation, ActorSpawnParams);
+	} else {
+		AFPSEngineUtility::AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow,
+			FString::Printf(TEXT("%s: No projectile!"), *GetName()));
+	}
+}
+
+bool AFPSCharacter::ServerFire_Validate() {
+	return true;
 }
 
 void AFPSCharacter::MoveForward(float Value) {
