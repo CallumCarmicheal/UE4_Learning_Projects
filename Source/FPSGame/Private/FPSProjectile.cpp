@@ -4,6 +4,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "AFPSEngineUtility.h"
 
 AFPSProjectile::AFPSProjectile() {
 	// Use a sphere as a simple collision representation
@@ -37,6 +38,13 @@ AFPSProjectile::AFPSProjectile() {
 
 
 void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
+	// Make sure we don't collide with the owner after firing.
+	if (OtherActor == Instigator) {
+		//AFPSEngineUtility::AddOnScreenDebugMessage(-1, 1, FColor::Blue,
+		//	FString::Printf(TEXT("%s: Collided with owner!"), *GetName()));
+		return;
+	}
+	
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
