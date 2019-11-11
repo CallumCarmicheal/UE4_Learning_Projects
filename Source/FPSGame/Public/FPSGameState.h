@@ -35,5 +35,5 @@ public:
 
 	
 	UFUNCTION(NetMulticast, Reliable)
-	void MulticastOnMissionComplete(APawn* InstigatorPawn, bool bMissionSuccess);
+	void MulticastOnMissionCompleted(APawn* InstigatorPawn, bool bMissionSuccess);
 };
