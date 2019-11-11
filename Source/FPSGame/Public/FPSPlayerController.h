@@ -13,5 +13,10 @@ UCLASS()
 class FPSGAME_API AFPSPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+public:
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "PlayerController")
+	void OnMissionCompleted(APawn* InstigatorPawn, bool bMissionSuccess);
 	
 };

@@ -8,6 +8,7 @@
 #include "FPSGameState.h"
 
 #include "GameVersion.generated.h"
+#include "Engine/World.h"
 
 AFPSGameMode::AFPSGameMode()
 {
@@ -38,10 +39,13 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess) 
 			// Change view targets if any valid actor is found
 			if (ReturnedActors.Num() > 0) {
 				AActor* NewViewTarget = ReturnedActors[0];
-				APlayerController* PC = Cast<APlayerController>(InstigatorPawn->GetController());
 
-				if (PC)
-					PC->SetViewTargetWithBlend(NewViewTarget, 0.5f, EViewTargetBlendFunction::VTBlend_Cubic);
+				for (FConstPlayerControllerIterator it = GetWorld()->GetPlayerControllerIterator(); it; it++) {
+					APlayerController* PC = it->Get();
+
+					if (PC) 
+						PC->SetViewTargetWithBlend(NewViewTarget, 0.5f, EViewTargetBlendFunction::VTBlend_Cubic);
+				}
 			}
 		}
 
@@ -54,7 +58,7 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess) 
 	// Invoke the Multicast Mission Complete event
 	AFPSGameState* GS = GetGameState<AFPSGameState>();
 	if (GS) {
-		GS->MulticastOnMissionComplete(InstigatorPawn, bMissionSuccess);
+		GS->MulticastOnMissionCompleted(InstigatorPawn, bMissionSuccess);
 	}
 	
 	// Invoke the blueprint event.
