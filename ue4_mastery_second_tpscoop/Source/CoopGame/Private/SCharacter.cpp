@@ -2,12 +2,15 @@
 
 #include "SCharacter.h"
 #include "Components/InputComponent.h"
+#include "Camera/CameraComponent.h"
 
 // Sets default values
 ASCharacter::ASCharacter() {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
+	CameraComp->bUsePawnControlRotation = true;
 }
 
 // Called when the game starts or when spawned
@@ -39,6 +42,4 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	PlayerInputComponent->BindAxis("LookUp",    this, &ASCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookRight", this, &ASCharacter::AddControllerYawInput);
-
-
 }
