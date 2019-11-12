@@ -6,10 +6,10 @@ public class CoopGame : ModuleRules
 {
 	public CoopGame(ReadOnlyTargetRules Target) : base(Target)
 	{
-		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs; // IWYU 
+        bEnforceIWYU = true;
 
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
 		// Uncomment if you are using Slate UI
