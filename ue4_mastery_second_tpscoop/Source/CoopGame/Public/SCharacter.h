@@ -26,6 +26,9 @@ protected: // Input Methods
 	void InputMoveForward(float Value);
 	void InputMoveRight(float Value);
 
+	void InputBeginCrouch();
+	void InputEndCrouch();
+	
 protected: // Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* CameraComp;
