@@ -21,7 +21,9 @@ ASCharacter::ASCharacter() {
 	CameraComp->SetupAttachment(SpringArmComp);
 
 	// Enable crouching.
-	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
+	auto navProperties = GetMovementComponent()->GetNavAgentPropertiesRef();
+	navProperties.bCanCrouch = true;
+	navProperties.bCanJump = true;
 }
 
 // Called when the game starts or when spawned
@@ -59,9 +61,11 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("MoveForward", this, &ASCharacter::InputMoveForward);
 	PlayerInputComponent->BindAxis("MoveRight",	  this, &ASCharacter::InputMoveRight);
 
-	PlayerInputComponent->BindAxis("LookUp",    this, &ASCharacter::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("LookRight", this, &ASCharacter::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp",		this, &ASCharacter::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("LookRight",	this, &ASCharacter::AddControllerYawInput);
 
-	PlayerInputComponent->BindAction("Crouch", IE_Pressed,  this, &ASCharacter::InputBeginCrouch);
-	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &ASCharacter::InputEndCrouch);
+	PlayerInputComponent->BindAction("Crouch",	IE_Pressed,  this, &ASCharacter::InputBeginCrouch);
+	PlayerInputComponent->BindAction("Crouch",	IE_Released, this, &ASCharacter::InputEndCrouch);
+
+	PlayerInputComponent->BindAction("Jump",		IE_Pressed, this, &ACharacter::Jump);
 }
