@@ -18,8 +18,7 @@ public class FPSGameEditorTarget : TargetRules {
         IncrementalBuildNumber(Target);
     }
 
-
-
+#region Incremental Build System
     private void IncrementalBuildNumber(TargetInfo Target) {
         string MODULE_NAME = "FPSGame";
         string PROJECT_PATH = this.ProjectFile.Directory.FullName;
@@ -173,4 +172,5 @@ public class FPSGameEditorTarget : TargetRules {
             return Read(Key, Section).Length > 0;
         }
     }
+#endif
 }
