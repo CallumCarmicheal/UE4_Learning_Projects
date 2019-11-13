@@ -48,17 +48,12 @@ void ASWeapon::Fire() {
 		FHitResult Hit;
 		if(GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, ECC_Visibility, QueryParams)) {
 			// Hit object, Process Damage.
-
 			AActor* HitActor = Hit.GetActor();
-
 			UGameplayStatics::ApplyPointDamage(HitActor, WeaponDamage, ShotDirection, Hit, pOwner->GetInstigatorController(), this, DamageType);
 		}
 
 		DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::Red, false, 1.0f, 0, 1.0f);
 	}
-
-
-	
 }
 
 // Called every frame

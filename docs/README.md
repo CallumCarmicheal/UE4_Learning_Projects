@@ -12,6 +12,7 @@ This repository will contain a lot of test projects which are used mainly for ed
 
 # UE4_Mastery_First_FPSGame 
 (UE4_FPSGame_Learning)
+[View on Github](https://github.com/CallumCarmicheal/UE4_Learning_Projects/tree/master/ue4_mastery_first_fpsgame)
 A stepping stone project that was used as my first actual game inside UE4, The game is not pretty nor is much over what ever you would get if you followed the course (listed below). 
 Although this was a project that teaches me the basics of UE4 with some simple networking through Replication.
 
@@ -42,6 +43,7 @@ but can be changed through editing [FPSGameEditor.Target.cs](https://github.com/
 ![Pulsating Material with Properties](resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.customizable_pulsing_material.PNG "Pulsating Material with Properties")
 
 # UE4_Mastery_Second_TPSCoop
+[View on Github](https://github.com/CallumCarmicheal/UE4_Learning_Projects/tree/master/ue4_mastery_second_tpscoop)
 This project is just like the previous one [ue4_mastery_first_fpsgame](#ue4_mastery_first_fpsgame), I am following the course (listed below) while adding my own additions here and there. 
 
 The goal of this project is to create a Coop (Multiplayer with possible Splitscreen support) Third Person Shooter. 
