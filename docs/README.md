@@ -39,7 +39,7 @@ but can be changed through editing [FPSGameEditor.Target.cs](https://github.com/
 
 ## Screenshots
 ### Ingame
-![Ingame](resources/ue4_mastery_first_fpsgame.ingame.PNG "Ingame")
+![Ingame](resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.ingame.PNG "Ingame")
 
 ### Level design
 ![Level design](resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.level_design.PNG "Level design")
