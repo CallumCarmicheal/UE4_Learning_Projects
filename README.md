@@ -10,7 +10,7 @@ This repository will contain a lot of test projects which are used mainly for ed
 | Project Name | CID | Description | Image(s) / Video(s) |
 :----:|:----:|:----:|:----:
 [ue4_mastery_first_fpsgame](/ue4_mastery_first_fpsgame/)	|	ue4mf	|	This is the first ever game I created in UE4 that was not just level design, This project was created using the udemy course (stated within its README) | ![Ingame](/docs/resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.ingame.PNG "Ingame")
-[ue4_mastery_second_tpscoop](ue4_mastery_second_tpscoop/)	|	ue4mtc	|	This is the second ever game I have created in UE4, This project is under active development. | [!Editor](/docs/resources/ue4_mastery_second_tpscoop/Prototype_TestLevel_With_CharAnim.PNG "Editor")
+[ue4_mastery_second_tpscoop](ue4_mastery_second_tpscoop/)	|	ue4mtc	|	This is the second ever game I have created in UE4, This project is under active development. | ![Editor](/docs/resources/ue4_mastery_second_tpscoop/Prototype_TestLevel_With_CharAnim.PNG "Editor")
 
 
 Commit Project Id's 
