@@ -5,6 +5,7 @@
 
 #include "DrawDebugHelpers.h"
 #include "CollisionQueryParams.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASWeapon::ASWeapon()
@@ -25,6 +26,7 @@ void ASWeapon::BeginPlay()
 
 void ASWeapon::Fire() {
 	const float HIT_TRACE_LENGTH = 10000.0f;
+	const float WeaponDamage = 20.0f;
 	
 	// Trace the world from the pawn eye's to the cross-hair location
 
@@ -34,7 +36,9 @@ void ASWeapon::Fire() {
 		FRotator EyeRotation;
 		pOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 
-		FVector TraceEnd = EyeLocation + (EyeRotation.Vector() * HIT_TRACE_LENGTH);
+		FVector ShotDirection = EyeRotation.Vector();
+		
+		FVector TraceEnd = EyeLocation + (ShotDirection * HIT_TRACE_LENGTH);
 
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(pOwner);
@@ -44,7 +48,10 @@ void ASWeapon::Fire() {
 		FHitResult Hit;
 		if(GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, ECC_Visibility, QueryParams)) {
 			// Hit object, Process Damage.
-			
+
+			AActor* HitActor = Hit.GetActor();
+
+			UGameplayStatics::ApplyPointDamage(HitActor, WeaponDamage, ShotDirection, Hit, pOwner->GetInstigatorController(), this, DamageType);
 		}
 
 		DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::Red, false, 1.0f, 0, 1.0f);
