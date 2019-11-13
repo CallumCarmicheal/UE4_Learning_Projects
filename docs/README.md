@@ -7,8 +7,8 @@ This repository will contain a lot of test projects which are used mainly for ed
 
 | Project Name  | Description | Image(s) / Video(s) |
 :----:|:----:|:----:
-[UE4 Mastery: First FPSGame](#ue4_mastery_first_fpsgame) | This is the first ever game I created in UE4 that was not just level design, This project was created using the udemy course (stated within its README) | ![Ingame](resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.ingame.PNG "Ingame")
-[UE4 Mastery: Second TPS Coop Game](#UE4_Mastery_Second_TPSCoop) | The second game i've fully developed in UE4. While following the Udemy course I will be implemening additional features. | N/A
+[UE4 Mastery: First FPSGame](#UE4_Mastery_First_FPSGame) | This is the first ever game I created in UE4 that was not just level design, This project was created using the udemy course (stated within its README) | ![Ingame](resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.ingame.PNG "Ingame")
+[UE4 Mastery: Second TPS Coop Game](#UE4_Mastery_Second_TPSCoop) | The second game i've fully developed in UE4. While following the Udemy course I will be implemening additional features. | ![Editor](resources/ue4_mastery_second_tpscoop/Prototype_TestLevel_With_CharAnim.PNG "Editor")
 
 # UE4_Mastery_Second_TPSCoop
 This project is just like the previous one [ue4_mastery_first_fpsgame](#ue4_mastery_first_fpsgame), I am following the course (listed below) while adding my own additions here and there. 
@@ -19,7 +19,7 @@ This project should cover most key areas such as Materials, Levels, Gameplay Log
 
 After this project is finished it will be used as a prototype for learning advanced level design techniques and possibly implementing more mechanics such as buildable / deployable cover etc.
 
-# ue4_mastery_first_fpsgame 
+# UE4_Mastery_First_FPSGame 
 (UE4_FPSGame_Learning)
 A stepping stone project that was used as my first actual game inside UE4, The game is not pretty nor is much over what ever you would get if you followed the course (listed below). 
 Although this was a project that teaches me the basics of UE4 with some simple networking through Replication.
