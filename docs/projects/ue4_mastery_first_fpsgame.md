@@ -23,7 +23,7 @@ micro_nav: true
 page_nav:
     next:
         content: Next project
-        url: '../ue4_mastery_second_tpscoop/'
+        url: 'projects/ue4_mastery_second_tpscoop/'
 ---
 
 # Learning source used
@@ -41,14 +41,14 @@ but can be changed through editing [FPSGameEditor.Target.cs](https://github.com/
 
 # Screenshots
 ## Ingame
-![Ingame](/resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.ingame.PNG "Ingame")
+![Ingame](../../resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.ingame.PNG "Ingame")
 
 ## Level design
-![Level design](/resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.level_design.PNG "Level design")
+![Level design](../../resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.level_design.PNG "Level design")
 
 ## UIVersion Blueprint
-![Version Blueprint](/resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.version_info_example.PNG "Blueprint for showing Version on UI")
+![Version Blueprint](../../resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.version_info_example.PNG "Blueprint for showing Version on UI")
 
 ## Pulsating Material with Properties
-![Pulsating Material with Properties](/resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.customizable_pulsing_material.PNG "Pulsating Material with Properties")
+![Pulsating Material with Properties](../../resources/ue4_mastery_first_fpsgame/ue4_mastery_first_fpsgame.customizable_pulsing_material.PNG "Pulsating Material with Properties")
 

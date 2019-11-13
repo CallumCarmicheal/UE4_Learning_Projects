@@ -24,7 +24,7 @@ micro_nav: true
 page_nav:
     prev:
         content: Previous project
-        url: '../ue4_mastery_first_fpsgame/'
+        url: 'projects/ue4_mastery_first_fpsgame/'
 ---
 
 # Summary
@@ -43,7 +43,7 @@ Commit: [7b7c7afb544b79fd288e9f2da6eff56f72567071](https://github.com/CallumCarm
 
 Added character with movement (Crouching, Jumping) and animations.  
 
-![Editor](/resources/ue4_mastery_second_tpscoop/Prototype_TestLevel_With_CharAnim.PNG "Editor")
+![Editor](../../resources/ue4_mastery_second_tpscoop/Prototype_TestLevel_With_CharAnim.PNG "Editor")
 
 
 # Learning source(s) used
@@ -52,8 +52,8 @@ I used the following course to get a grasp on the basic features of UE4.
 
 ## Additions
 I have made a few changes / additions to from the base lessons, though not all are listed here are the main ones:
-- Implemented a build counter using the [UE4 Build system, FPSGameEditor.Target.cs](/ue4_mastery_second_tpscoop/Source/CoopGameEditor.Target.cs).
-but can be changed through editing [FPSGameEditor.Target.cs](/ue4_mastery_second_tpscoop/Source/CoopGameEditor.Target.cs).
+- Implemented a build counter using the [UE4 Build system, FPSGameEditor.Target.cs](../../ue4_mastery_second_tpscoop/Source/CoopGameEditor.Target.cs).
+but can be changed through editing [FPSGameEditor.Target.cs](../../ue4_mastery_second_tpscoop/Source/CoopGameEditor.Target.cs).
 
 ## Screenshots
 ### Prototype(s) / Milestones
@@ -68,7 +68,7 @@ Commit: [7b7c7afb544b79fd288e9f2da6eff56f72567071](https://github.com/CallumCarm
 
 Added character with movement: Crouching, Jumping and animations.
 
-![TestLevel](/resources/ue4_mastery_second_tpscoop/Prototype_TestLevel_With_CharAnim.PNG "TestLevel")
+![TestLevel](../../resources/ue4_mastery_second_tpscoop/Prototype_TestLevel_With_CharAnim.PNG "TestLevel")
 
 ## Learning source used
 I used the following course to get a grasp on the basic features of UE4.  
