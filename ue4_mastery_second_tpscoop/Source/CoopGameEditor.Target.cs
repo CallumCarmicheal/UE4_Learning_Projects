@@ -11,6 +11,8 @@ using Tools.DotNETCommon;
 using System.Runtime.InteropServices;
 
 public class CoopGameEditorTarget : TargetRules {
+    const string MODULE_NAME = "CoopGame";
+
 	public CoopGameEditorTarget(TargetInfo Target) : base(Target)  {
 		Type = TargetType.Editor;
 
@@ -22,7 +24,6 @@ public class CoopGameEditorTarget : TargetRules {
 
 #region Incremental Build
     private void IncrementalBuildNumber(TargetInfo Target) {
-        const string MODULE_NAME = "CoopGame";
         string PROJECT_PATH      = this.ProjectFile.Directory.FullName;
         string GAME_VERSION_FILE = PROJECT_PATH + "/Source/" + MODULE_NAME + "/Public/GameVersion.generated.h";
         string GAME_META_FILE    = PROJECT_PATH + "/Source/" + MODULE_NAME + ".Meta.ini";

@@ -2,4 +2,5 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+.vscode
 /Intermediate/Build/Win64/FPSGameEditor

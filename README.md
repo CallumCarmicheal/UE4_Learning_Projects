@@ -18,5 +18,5 @@ CID = Commit Id, If a commit is prefixed with this it means its addressing a com
 
 | CID | Acronym | Project Name |
 :----:|:----:|:----:
-ue4mf	| ***UE4*** ***M***astery ***F***PS | [ue4_mastery_first_fpsgame](ue4_mastery_first_fpsgame/)
+ue4mf	| ***UE4*** ***M***astery ***F***PS | [ue4_mastery_first_fpsgame](/ue4_mastery_first_fpsgame/)
 ue4mtc	| ***UE4*** ***M***astery ***T***PS **C**oop | [ue4_mastery_second_tpscoop](ue4_mastery_second_tpscoop/)
