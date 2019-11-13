@@ -18,7 +18,7 @@ but can be changed through editing [FPSGameEditor.Target.cs](/ue4_mastery_second
 
 ## Screenshots
 ### Prototype(s) / Milestones
-| Date | Commit | Milestone | Description | Image(s) / Video(s) |
-:----:|:----:|:----:|:----:|:----:
+| Date | Commit | Description | Image(s) / Video(s)
+:----:|:----:|:----:|:------:
 11/11/2019 | 2cc262408ac6c16c21fdbe9e55f08e52a71a84cb | Created Project | 
-12/11/2019 | 7b7c7afb544b79fd288e9f2da6eff56f72567071 | Added character with movement (Crouching, Jumping) and animations. | ![TestLevel](/docs/resources/ue4_mastery_second_tpscoop/Prototype_TestLevel_With_CharAnim.ingame.PNG "TestLevel")
+12/11/2019 | 7b7c7afb544b79fd288e9f2da6eff56f72567071 | Added character with movement (Crouching, Jumping) and animations. | ![TestLevel](/docs/resources/ue4_mastery_second_tpscoop/Prototype_TestLevel_With_CharAnim.PNG "TestLevel")
