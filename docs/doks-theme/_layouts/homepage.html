@@ -42,13 +42,11 @@
 											<a href="{{ page.author.title_url }}" class="btn btn--read-more">
 												{{ page.author.title }}
 												<i class="icon icon--arrow-right"></i>
-												<p>External = true</p>
 											</a>
 											{% else %}
 											<a href="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}{{ page.author.title_url }}" class="btn btn--read-more">
 												{{ page.author.title }}
 												<i class="icon icon--arrow-right"></i>
-												<p>External = false</p>
 											</a>
 											{% endif %}
 										</p><!-- /.hero-subheader__author-title -->
