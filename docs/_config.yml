@@ -7,10 +7,8 @@ doks:
             text: UE4_Learning_Projects
             image: 
         nav:
-            - item_name: Projects
-              item_url: '#'
             - item_name: View Repository
-              item_url: '#'
+              item_url: 'https://github.com/CallumCarmicheal/UE4_Learning_Projects'
     footer:
         content:
             logo:
