@@ -3,6 +3,9 @@
 
 #include "SWeapon.h"
 
+#include "DrawDebugHelpers.h"
+#include "CollisionQueryParams.h"
+
 // Sets default values
 ASWeapon::ASWeapon()
 {
@@ -17,6 +20,37 @@ ASWeapon::ASWeapon()
 void ASWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+	
+}
+
+void ASWeapon::Fire() {
+	const float HIT_TRACE_LENGTH = 10000.0f;
+	
+	// Trace the world from the pawn eye's to the cross-hair location
+
+	AActor* pOwner = GetOwner();
+	if (pOwner) {
+		FVector EyeLocation;
+		FRotator EyeRotation;
+		pOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+
+		FVector TraceEnd = EyeLocation + (EyeRotation.Vector() * HIT_TRACE_LENGTH);
+
+		FCollisionQueryParams QueryParams;
+		QueryParams.AddIgnoredActor(pOwner);
+		QueryParams.AddIgnoredActor(this);
+		QueryParams.bTraceComplex = true;
+		
+		FHitResult Hit;
+		if(GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, ECC_Visibility, QueryParams)) {
+			// Hit object, Process Damage.
+			
+		}
+
+		DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::Red, false, 1.0f, 0, 1.0f);
+	}
+
+
 	
 }
 
