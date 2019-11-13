@@ -37,7 +37,6 @@ void ASWeapon::Fire() {
 		pOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 
 		FVector ShotDirection = EyeRotation.Vector();
-		
 		FVector TraceEnd = EyeLocation + (ShotDirection * HIT_TRACE_LENGTH);
 
 		FCollisionQueryParams QueryParams;

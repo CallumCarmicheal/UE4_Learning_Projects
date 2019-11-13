@@ -1,4 +1,39 @@
-theme: jekyll-theme-cayman
-show_downloads: true
+# Theme settings
+doks:
+    baseurl:
+    color_theme: # Available themes: blue (default), green, purple, red and yellow
+    header:
+        logo:
+            text: UE4_Learning_Projects
+            image: 
+        nav:
+            - item_name: Projects
+              item_url: '#'
+            - item_name: View Repository
+              item_url: '#'
+    footer:
+        content:
+            logo:
+                text: UE4_Learning_Projects
+                image:
+            copyright: Copyright &copy; 2019. - Callum Carmicheal<br>All rights reserved.
+        social_list:
+            - network_name: github
+              profile_url: 'https://github.com/CallumCarmicheal'
+            - network_name: youtube
+              profile_url: 'https://youtube.com/CallumRoyCarmicheal'
+    google_analytics:
+        tracking_code: # Add your Google Analytics tracking code to activate Google Analytics
+    comments:
+        disqus_forum_shortname: # Add your disqus forum shortname to activate comments
 
-customvariable: "world!! customvariable"
+# SASS settings
+sass:
+    sass_dir: ./doks-theme/_sass
+    style: :compressed
+
+# Jekyll settings
+layouts_dir: ./doks-theme/_layouts
+includes_dir: ./doks-theme/_includes
+exclude: [ 'README.md', 'CHANGELOG.md' ]
+permalink: /:title/
