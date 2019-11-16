@@ -71,7 +71,6 @@ void ASWeapon::Fire() {
 		if (MuzzleEffect)
 			UGameplayStatics::SpawnEmitterAttached(MuzzleEffect, MeshComp, MuzzleSocketName);
 
-		
 		if (TracerEffect) {
 			FVector MuzzleLocation = MeshComp->GetSocketLocation(MuzzleSocketName);
 
