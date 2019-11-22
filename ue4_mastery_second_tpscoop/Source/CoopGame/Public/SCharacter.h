@@ -29,6 +29,10 @@ protected: // Input Methods
 	void InputBeginCrouch();
 	void InputEndCrouch();
 	
+	void InputBeginZoom();
+	void InputEndZoom();
+
+	
 protected: // Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* CameraComp;
@@ -36,6 +40,33 @@ protected: // Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USpringArmComponent* SpringArmComp;
 
+
+	/**
+	 * If the camera wants to zoom.
+	 */
+	bool bWantsToZoom;
+
+	/**
+	 * FOV to be set while Zooming in.
+	 */
+	UPROPERTY(EditDefaultsOnly, Category = "Player", meta = (DisplayName = "FOV Zoomed"))
+	float FOVZoomed;
+
+	/**
+	 * The Interp speed for Zooming
+	 */
+	UPROPERTY(EditDefaultsOnly, Category = "Player", meta = (ClampMin = 0.1, ClampMax = 100.0))
+	float ZoomInterpSpeed;
+	
+	/**
+	 * Default FOV set during BeginPlay.
+	 *
+	 * Hidden from designer as its set at runtime not in constructor.
+	 * If you want to see this in the designer use:
+	 *		UPROPERTY(VisibleDefaultsOnly, Category = "Player") 
+	 */
+	float FOVDefault;
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
