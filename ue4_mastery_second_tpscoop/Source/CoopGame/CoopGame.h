@@ -4,3 +4,4 @@
 
 #include "CoreMinimal.h"
 
+#define CC_CONSOLE_PREFIX "cc."

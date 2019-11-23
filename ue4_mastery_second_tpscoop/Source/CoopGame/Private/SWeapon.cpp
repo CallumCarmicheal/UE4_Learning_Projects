@@ -3,6 +3,8 @@
 
 #include "SWeapon.h"
 
+#include "CoopGame.h"
+
 #include "DrawDebugHelpers.h"
 #include "CollisionQueryParams.h"
 #include "Kismet/GameplayStatics.h"
@@ -12,7 +14,7 @@
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVAR_DebugWeaponDrawing (
-	TEXT("COOP.Debug.WeaponDrawing"),
+	TEXT(CC_CONSOLE_PREFIX "Debug.WeaponDrawing"),
 	DebugWeaponDrawing,
 	TEXT("Draw Debug Lines for Weapons"),
 	ECVF_Cheat);
@@ -35,7 +37,6 @@ void ASWeapon::Fire() {
 	const float WeaponDamage = 20.0f;
 	
 	// Trace the world from the pawn eye's to the cross-hair location
-
 	AActor* pOwner = GetOwner();
 	if (pOwner) {
 		FVector EyeLocation;
@@ -68,6 +69,8 @@ void ASWeapon::Fire() {
 		if (DebugWeaponDrawing > 0)
 			DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
 
+		UE_LOG(LogTemp, Warning, TEXT("Firing, DebugWeaponDrawing == %d"), DebugWeaponDrawing);
+		
 		// 
 		PlayFireEffects(TracerEndPoint);
 	}
