@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class ASWeapon;
 
 UCLASS()
 class COOPGAME_API ASCharacter : public ACharacter
@@ -32,6 +33,8 @@ protected: // Input Methods
 	void InputBeginZoom();
 	void InputEndZoom();
 
+	void InputStartFire();
+	void InputEndFire();
 	
 protected: // Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -40,7 +43,16 @@ protected: // Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USpringArmComponent* SpringArmComp;
 
+protected: // Properties
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player")
+	ASWeapon* CurrentWeapon;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	TSubclassOf<ASWeapon> StarterWeaponClass;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
+	FName WeaponAttachSocketName;
+	
 	/**
 	 * If the camera wants to zoom.
 	 */

@@ -2,10 +2,15 @@
 
 #include "SCharacter.h"
 #include "Components/InputComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
 
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+
+#include "Engine/World.h"
+
+#include "SWeapon.h"
 
 // Sets default values
 ASCharacter::ASCharacter() {
@@ -26,6 +31,8 @@ ASCharacter::ASCharacter() {
 	navProperties.bCanJump = true;
 
 	// Set the default variables
+	WeaponAttachSocketName = "Socket_Weapon";
+
 	ZoomInterpSpeed = 20;
 	FOVZoomed = 65.0;
 }
@@ -40,6 +47,16 @@ void ASCharacter::BeginPlay() {
 	// If our zoomed FOV is not set, Set it to default - 30.
 	if (FOVZoomed == 0)
 		FOVZoomed  = FOVDefault - 30;
+
+	// Spawn a default weapon
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	
+	CurrentWeapon = static_cast<ASWeapon*>(GetWorld()->SpawnActor<AActor>(StarterWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams));
+	if (CurrentWeapon) {
+		CurrentWeapon->SetOwner(this);
+		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
+	}
 }
 
 void ASCharacter::InputMoveForward(float Value) {
@@ -64,6 +81,15 @@ void ASCharacter::InputBeginZoom() {
 
 void ASCharacter::InputEndZoom() {
 	bWantsToZoom = false;
+}
+
+void ASCharacter::InputStartFire() {
+	if (CurrentWeapon)
+		CurrentWeapon->Fire();
+}
+
+void ASCharacter::InputEndFire() {
+	
 }
 
 // Called every frame
@@ -93,6 +119,9 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	PlayerInputComponent->BindAction("Zoom",    IE_Pressed, this, &ASCharacter::InputBeginZoom);
 	PlayerInputComponent->BindAction("Zoom",    IE_Released, this, &ASCharacter::InputEndZoom);
+
+	PlayerInputComponent->BindAction("Fire",		IE_Pressed,  this, &ASCharacter::InputStartFire);
+	PlayerInputComponent->BindAction("Fire",		IE_Released, this, &ASCharacter::InputEndFire);
 
 }
 
