@@ -69,7 +69,7 @@ void ASWeapon::Fire() {
 		if (DebugWeaponDrawing > 0)
 			DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
 
-		UE_LOG(LogTemp, Warning, TEXT("Firing, DebugWeaponDrawing == %d"), DebugWeaponDrawing);
+		//UE_LOG(LogTemp, Warning, TEXT("Firing, DebugWeaponDrawing == %d"), DebugWeaponDrawing);
 		
 		// 
 		PlayFireEffects(TracerEndPoint);
@@ -86,5 +86,12 @@ void ASWeapon::PlayFireEffects(const FVector TracerEndPoint) const {
 		UParticleSystemComponent* pTracerComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), TracerEffect, MuzzleLocation);
 		if (pTracerComponent)
 			pTracerComponent->SetVectorParameter(TracerTargetName, TracerEndPoint);
+	}
+
+	APawn* pOwner = Cast<APawn>(GetOwner());
+	APlayerController* PC = pOwner ? Cast<APlayerController>(pOwner->GetController()) : nullptr;
+
+	if (PC) {
+		PC->ClientPlayCameraShake(FireCamShake);
 	}
 }
