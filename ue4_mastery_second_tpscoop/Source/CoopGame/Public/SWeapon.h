@@ -19,10 +19,10 @@ public:
 	// Sets default values for this actor's properties
 	ASWeapon();
 
-protected:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	virtual void Fire();
-
+	
+protected:
 	void PlayFireEffects(const FVector TracerEndPoint) const;
 	
 protected:
