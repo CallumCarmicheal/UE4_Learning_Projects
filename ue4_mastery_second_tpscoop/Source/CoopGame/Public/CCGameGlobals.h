@@ -13,5 +13,7 @@ UCLASS()
 class COOPGAME_API UCCGameGlobals : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
-	
+
+	UFUNCTION(BlueprintCallable, Category = "CC")
+	static FName GetGameBuildVersion();
 };
