@@ -43,7 +43,7 @@ ASWeapon::ASWeapon()
 void ASWeapon::BeginPlay() {
 	Super::BeginPlay();
 
-	TimeBetweenShots = 60 / RateOfFire;
+	fTimeBetweenShots = 60 / RateOfFire;
 }
 
 
@@ -111,7 +111,7 @@ void ASWeapon::Fire() {
 		// 
 		PlayFireEffects(TracerEndPoint);
 
-		LastFireTime = GetWorld()->TimeSeconds;
+		fLastFireTime = GetWorld()->TimeSeconds;
 
 		// 
 		if (AutomaticFiring == false) {
@@ -141,13 +141,13 @@ void ASWeapon::PlayFireEffects(const FVector TracerEndPoint) const {
 }
 
 void ASWeapon::StartFire() {
-	float FirstDelay = FMath::Max(LastFireTime + TimeBetweenShots - GetWorld()->TimeSeconds, 0.0f);
+	float FirstDelay = FMath::Max(fLastFireTime + fTimeBetweenShots - GetWorld()->TimeSeconds, 0.0f);
 
-	CCEngineUtility::AddOnScreenDebugMessage(-1, 1, FColor::Yellow,
-		FString::Printf(TEXT("SWeapon: {LastFireTime=%f, TimeBetweenShots=%f, WorldTimeSeconds=%f, FirstDelay=%f}!"), 
-			LastFireTime, TimeBetweenShots, GetWorld()->TimeSeconds, FirstDelay));
+	//CCEngineUtility::AddOnScreenDebugMessage(-1, 1, FColor::Yellow,
+	//	FString::Printf(TEXT("SWeapon: {IsAutomatic=%d, LastFireTime=%f, TimeBetweenShots=%f, WorldTimeSeconds=%f, FirstDelay=%f}!"), 
+	//		AutomaticFiring, fLastFireTime, fTimeBetweenShots, GetWorld()->TimeSeconds, FirstDelay));
 	
-	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, TimeBetweenShots, true, FirstDelay);
+	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, fTimeBetweenShots, true, FirstDelay);
 }
 
 void ASWeapon::StopFire() {

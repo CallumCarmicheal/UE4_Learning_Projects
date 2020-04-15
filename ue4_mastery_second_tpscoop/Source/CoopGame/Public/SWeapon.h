@@ -56,15 +56,15 @@ protected:
 	float RateOfFire;
 
 	/** States if the weapon is automatic */
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	bool AutomaticFiring;
 	
 private:
 	FTimerHandle TimerHandle_TimeBetweenShots;
-	float LastFireTime;
+	float fLastFireTime;
 
 	// Derived from rate of fire.
-	float TimeBetweenShots;
+	float fTimeBetweenShots;
 	
 public:
 	
