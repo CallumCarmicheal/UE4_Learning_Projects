@@ -31,11 +31,12 @@ ASWeapon::ASWeapon()
 
 	MuzzleSocketName = "Socket_Weapon_Muzzle";
 	TracerTargetName = "Target";
+
+	BaseDamage = 20.0f;
 }
 
 void ASWeapon::Fire() {
 	const float HIT_TRACE_LENGTH = 10000.0f;
-	const float WeaponDamage = 20.0f;
 	
 	// Trace the world from the pawn eye's to the cross-hair location
 	AActor* pOwner = GetOwner();
@@ -57,12 +58,18 @@ void ASWeapon::Fire() {
 		FVector TracerEndPoint = TraceEnd;
 		
 		FHitResult Hit;
-		if(GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, CC_COLLISION_WEAPON, QueryParams)) {
+		if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, CC_COLLISION_WEAPON, QueryParams)) {
 			// Hit object, Process Damage.
 			AActor* HitActor = Hit.GetActor();
-			UGameplayStatics::ApplyPointDamage(HitActor, WeaponDamage, ShotDirection, Hit, pOwner->GetInstigatorController(), this, DamageType);
 
 			EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+
+			float ActualDamage = BaseDamage;
+			if (SurfaceType == CC_SURFACE_FLESHVULNERABLE) 
+				ActualDamage *= 4.0f;
+			
+			UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, pOwner->GetInstigatorController(), this, DamageType);
+
 
 			// Select a particle effect to play
 			UParticleSystem* SelectedEffect = nullptr;
