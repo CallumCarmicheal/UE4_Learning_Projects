@@ -19,12 +19,6 @@ class COOPGAME_API ASWeapon : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ASWeapon();
-
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	virtual void Fire();
-	
-protected:
-	void PlayFireEffects(const FVector TracerEndPoint) const;
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -56,7 +50,34 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float BaseDamage;
-	
-public:	
 
+	/** RPM, Bullets fired per minute by weapon */
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float RateOfFire;
+
+	/** States if the weapon is automatic */
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	bool AutomaticFiring;
+	
+private:
+	FTimerHandle TimerHandle_TimeBetweenShots;
+	float LastFireTime;
+
+	// Derived from rate of fire.
+	float TimeBetweenShots;
+	
+public:
+	
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	virtual void StartFire();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	virtual void StopFire();
+
+protected:
+	virtual void BeginPlay() override;
+	
+	virtual void Fire();
+
+	void PlayFireEffects(const FVector TracerEndPoint) const;
 };

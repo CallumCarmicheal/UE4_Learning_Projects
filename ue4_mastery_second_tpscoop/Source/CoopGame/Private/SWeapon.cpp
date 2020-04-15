@@ -12,6 +12,8 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
+#include "TimerManager.h"
+#include "CCEngineUtility.h"
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVAR_DebugWeaponDrawing (
@@ -33,7 +35,17 @@ ASWeapon::ASWeapon()
 	TracerTargetName = "Target";
 
 	BaseDamage = 20.0f;
+	RateOfFire = 600.0f;
+
+	AutomaticFiring = true;
 }
+
+void ASWeapon::BeginPlay() {
+	Super::BeginPlay();
+
+	TimeBetweenShots = 60 / RateOfFire;
+}
+
 
 void ASWeapon::Fire() {
 	const float HIT_TRACE_LENGTH = 10000.0f;
@@ -70,7 +82,6 @@ void ASWeapon::Fire() {
 			
 			UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, pOwner->GetInstigatorController(), this, DamageType);
 
-
 			// Select a particle effect to play
 			UParticleSystem* SelectedEffect = nullptr;
 			switch(SurfaceType) {
@@ -99,6 +110,13 @@ void ASWeapon::Fire() {
 		
 		// 
 		PlayFireEffects(TracerEndPoint);
+
+		LastFireTime = GetWorld()->TimeSeconds;
+
+		// 
+		if (AutomaticFiring == false) {
+			GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
+		}
 	}
 }
 
@@ -121,3 +139,18 @@ void ASWeapon::PlayFireEffects(const FVector TracerEndPoint) const {
 		PC->ClientPlayCameraShake(FireCamShake);
 	}
 }
+
+void ASWeapon::StartFire() {
+	float FirstDelay = FMath::Max(LastFireTime + TimeBetweenShots - GetWorld()->TimeSeconds, 0.0f);
+
+	CCEngineUtility::AddOnScreenDebugMessage(-1, 1, FColor::Yellow,
+		FString::Printf(TEXT("SWeapon: {LastFireTime=%f, TimeBetweenShots=%f, WorldTimeSeconds=%f, FirstDelay=%f}!"), 
+			LastFireTime, TimeBetweenShots, GetWorld()->TimeSeconds, FirstDelay));
+	
+	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, TimeBetweenShots, true, FirstDelay);
+}
+
+void ASWeapon::StopFire() {
+	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
+}
+
