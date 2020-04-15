@@ -57,7 +57,7 @@ void ASWeapon::Fire() {
 		FVector TracerEndPoint = TraceEnd;
 		
 		FHitResult Hit;
-		if(GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, ECC_Visibility, QueryParams)) {
+		if(GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, CC_COLLISION_WEAPON, QueryParams)) {
 			// Hit object, Process Damage.
 			AActor* HitActor = Hit.GetActor();
 			UGameplayStatics::ApplyPointDamage(HitActor, WeaponDamage, ShotDirection, Hit, pOwner->GetInstigatorController(), this, DamageType);
@@ -67,8 +67,8 @@ void ASWeapon::Fire() {
 			// Select a particle effect to play
 			UParticleSystem* SelectedEffect = nullptr;
 			switch(SurfaceType) {
-			case SURFACE_FLESHDEFAULT: 
-			case SURFACE_FLESHVULNERABLE:
+			case CC_SURFACE_FLESHDEFAULT: 
+			case CC_SURFACE_FLESHVULNERABLE:
 				SelectedEffect = FleshImpactEffect;
 				break;
 				

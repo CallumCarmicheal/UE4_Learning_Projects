@@ -9,5 +9,10 @@
 // =================================================================================
 // ==                   S u r f a c e   T y p e s
 // 
-#define SURFACE_FLESHDEFAULT		SurfaceType1
-#define SURFACE_FLESHVULNERABLE		SurfaceType2
+#define CC_SURFACE_FLESHDEFAULT			SurfaceType1
+#define CC_SURFACE_FLESHVULNERABLE		SurfaceType2
+
+// =================================================================================
+// ==               C o l l i s i o n   T y p e s
+// 
+#define CC_COLLISION_WEAPON				ECC_GameTraceChannel1
