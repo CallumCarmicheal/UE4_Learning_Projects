@@ -11,6 +11,7 @@
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVAR_DebugWeaponDrawing (
@@ -49,6 +50,7 @@ void ASWeapon::Fire() {
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(pOwner);
 		QueryParams.AddIgnoredActor(this);
+		QueryParams.bReturnPhysicalMaterial = true;
 		QueryParams.bTraceComplex = true;
 
 		// Particle "Target" Parameter
@@ -60,9 +62,26 @@ void ASWeapon::Fire() {
 			AActor* HitActor = Hit.GetActor();
 			UGameplayStatics::ApplyPointDamage(HitActor, WeaponDamage, ShotDirection, Hit, pOwner->GetInstigatorController(), this, DamageType);
 
-			if (ImpactEffect)
-				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
+			EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
 
+			// Select a particle effect to play
+			UParticleSystem* SelectedEffect = nullptr;
+			switch(SurfaceType) {
+			case SURFACE_FLESHDEFAULT: 
+			case SURFACE_FLESHVULNERABLE:
+				SelectedEffect = FleshImpactEffect;
+				break;
+				
+			default:
+				SelectedEffect = DefaultImpactEffect;
+				break;
+			}
+			
+			// Play the effect
+			if (SelectedEffect)
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SelectedEffect, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
+
+			
 			TracerEndPoint = Hit.ImpactPoint;
 		}
 
