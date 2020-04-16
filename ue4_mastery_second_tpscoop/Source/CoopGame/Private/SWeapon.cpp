@@ -103,7 +103,7 @@ void ASWeapon::Fire() {
 			TracerEndPoint = Hit.ImpactPoint;
 		}
 
-		if (DebugWeaponDrawing > 0)
+		if (DebugWeaponDrawing > 0)	
 			DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
 
 		//UE_LOG(LogTemp, Warning, TEXT("Firing, DebugWeaponDrawing == %d"), DebugWeaponDrawing);
