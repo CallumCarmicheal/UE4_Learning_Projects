@@ -37,7 +37,6 @@ This project should cover most key areas such as Materials, Levels, Gameplay Log
 After this project is finished it will be used as a prototype for learning advanced level design techniques and possibly implementing more mechanics such as buildable / deployable cover etc.
 
 
-
 # Learning source(s) used
 I used the following course to get a grasp on the basic features of UE4.  
 - [Unreal Engine 4 Mastery: Create Multiplayer Games with C++](https://www.udemy.com/unrealengine-cpp)
@@ -47,7 +46,7 @@ I have made a few changes / additions to from the base lessons, though not all a
 - Implemented a build counter using the [UE4 Build system, FPSGameEditor.Target.cs](../../ue4_mastery_second_tpscoop/Source/CoopGameEditor.Target.cs).
 but can be changed through editing [FPSGameEditor.Target.cs](../../ue4_mastery_second_tpscoop/Source/CoopGameEditor.Target.cs).
 
-## References / Used Materials or Tutorials
+## Additional References / Used Materials or Tutorials
 
 Date Viewed: April1 16, 2020 
 Date Published (If avail): November 8, 2018
@@ -71,6 +70,3 @@ Added character with movement: Crouching, Jumping and animations.
 
 ![TestLevel](../../resources/ue4_mastery_second_tpscoop/Prototype_TestLevel_With_CharAnim.PNG "TestLevel")
 
-## Learning source used
-I used the following course to get a grasp on the basic features of UE4.  
-[Unreal Engine 4 Mastery: Create Multiplayer Games with C++](https://www.udemy.com/unrealengine-cpp)
