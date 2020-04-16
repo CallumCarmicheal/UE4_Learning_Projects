@@ -20,10 +20,3 @@ FName UCCGameGlobals::GetGameBuildVersion() {
 		BUILD_BUILD_DATE " " BUILD_BUILD_TIME
 		" # " BUILD_GIT_HASH;
 }
-
-static int32 UIVersionInformation = 0;
-FAutoConsoleVariableRef CVAR_UIVersionInformation(
-	TEXT(CC_CONSOLE_PREFIX "UI.VersionInformation"),
-	UIVersionInformation,
-	TEXT("Draw Debug Lines for Weapons"),
-	ECVF_SetByGameSetting);
