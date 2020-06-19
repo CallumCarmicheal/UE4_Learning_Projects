@@ -1,8 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SCharacter.h"
+#include "CoopGame.h"
+
+#include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+
 #include "Camera/CameraComponent.h"
 
 #include "GameFramework/SpringArmComponent.h"
@@ -24,6 +28,9 @@ ASCharacter::ASCharacter() {
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
+
+	// Disable weapon collision blocking on capsule
+	GetCapsuleComponent()->SetCollisionResponseToChannel(CC_COLLISION_WEAPON, ECR_Ignore);
 
 	// Enable crouching.
 	auto navProperties = GetMovementComponent()->GetNavAgentPropertiesRef();
