@@ -6,9 +6,9 @@
 #define BUILD_PATCH_VERSION 0
 
 // Build
-#define BUILD_BUILD_NUMBER 93
-#define BUILD_BUILD_DATE "Thursday, 16 April 2020"
-#define BUILD_BUILD_TIME "17:26:50"
+#define BUILD_BUILD_NUMBER 101
+#define BUILD_BUILD_DATE "Friday, 19 June 2020"
+#define BUILD_BUILD_TIME "10:21:29"
 
 // Git
-#define BUILD_GIT_HASH "4179ad7"
+#define BUILD_GIT_HASH "f58bbd7"
