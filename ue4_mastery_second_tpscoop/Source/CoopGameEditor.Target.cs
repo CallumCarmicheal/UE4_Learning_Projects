@@ -11,21 +11,23 @@ using System.Runtime.InteropServices;
 
 public class CoopGameEditorTarget : TargetRules {
     const string MODULE_NAME = "CoopGame";
+        
+    public CoopGameEditorTarget(TargetInfo Target) : base(Target) {
+        DefaultBuildSettings = BuildSettingsVersion.V2;
 
-	public CoopGameEditorTarget(TargetInfo Target) : base(Target)  {
-		Type = TargetType.Editor;
+        //
 
-		ExtraModuleNames.AddRange( new string[] { "CoopGame" } );
+        Type = TargetType.Editor;
+        ExtraModuleNames.AddRange(new string[] { "CoopGame" });
 
         IncrementalBuildNumber(Target);
     }
 
-
-#region Incremental Build
+    #region Incremental Build
     private void IncrementalBuildNumber(TargetInfo Target) {
-        string PROJECT_PATH      = this.ProjectFile.Directory.FullName;
+        string PROJECT_PATH = this.ProjectFile.Directory.FullName;
         string GAME_VERSION_FILE = PROJECT_PATH + "/Source/" + MODULE_NAME + "/Public/GameVersion.generated.h";
-        string GAME_META_FILE    = PROJECT_PATH + "/Source/" + MODULE_NAME + ".Meta.ini";
+        string GAME_META_FILE = PROJECT_PATH + "/Source/" + MODULE_NAME + ".Meta.ini";
 
         bool bMetaFile = File.Exists(GAME_META_FILE);
         MetaInformation meta = new MetaInformation();
@@ -174,5 +176,5 @@ public class CoopGameEditorTarget : TargetRules {
             return Read(Key, Section).Length > 0;
         }
     }
-#endregion
+    #endregion
 }

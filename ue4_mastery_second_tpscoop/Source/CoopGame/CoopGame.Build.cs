@@ -6,7 +6,10 @@ public class CoopGame : ModuleRules
 {
 	public CoopGame(ReadOnlyTargetRules Target) : base(Target)
 	{
-        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs; // IWYU 
+        // Enable #include "" any file in the public folder without having to specify directory (v1/legacy handling)
+        bLegacyPublicIncludePaths = true;
+
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs; // IWYU 
         bEnforceIWYU = true;
 
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });

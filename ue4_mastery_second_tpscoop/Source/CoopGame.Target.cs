@@ -3,12 +3,11 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class CoopGameTarget : TargetRules
-{
-	public CoopGameTarget(TargetInfo Target) : base(Target)
-	{
-		Type = TargetType.Game;
-
-		ExtraModuleNames.AddRange( new string[] { "CoopGame" } );
-	}
+public class CoopGameTarget : TargetRules {
+    public CoopGameTarget(TargetInfo Target) : base(Target) {
+        DefaultBuildSettings = BuildSettingsVersion.V2;
+        // 
+        Type = TargetType.Game;
+        ExtraModuleNames.AddRange(new string[] { "CoopGame" });
+    }
 }
