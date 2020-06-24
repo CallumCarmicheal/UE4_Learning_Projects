@@ -2,6 +2,9 @@
 
 #include "SCharacter.h"
 #include "CoopGame.h"
+#include "SWeapon.h"
+#include "CCEngineUtility.h"
+#include "Components/SHealthComponent.h"
 
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -14,7 +17,6 @@
 
 #include "Engine/World.h"
 
-#include "SWeapon.h"
 
 // Sets default values
 ASCharacter::ASCharacter() {
@@ -29,6 +31,8 @@ ASCharacter::ASCharacter() {
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
 
+	HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));
+	
 	// Disable weapon collision blocking on capsule
 	GetCapsuleComponent()->SetCollisionResponseToChannel(CC_COLLISION_WEAPON, ECR_Ignore);
 
@@ -42,6 +46,8 @@ ASCharacter::ASCharacter() {
 
 	ZoomInterpSpeed = 20;
 	FOVZoomed = 65.0;
+
+	bDied = false;
 }
 
 // Called when the game starts or when spawned
@@ -64,6 +70,9 @@ void ASCharacter::BeginPlay() {
 		CurrentWeapon->SetOwner(this);
 		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
 	}
+
+	// Attach our OnHealthChanged event
+	HealthComp->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
 }
 
 void ASCharacter::InputMoveForward(float Value) {
@@ -137,4 +146,28 @@ FVector ASCharacter::GetPawnViewLocation() const {
 		return CameraComp->GetComponentLocation();
 
 	return Super::GetPawnViewLocation();
+}
+
+void ASCharacter::OnHealthChanged(USHealthComponent* HealthComponent, float Health, float HealthDelta,
+		const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser) {
+	//UE_LOG(LogTemp, Warning, TEXT("ASCharacter::OnHealthChanged(%f, %f) -> bDied = %d"), Health, HealthDelta, bDied);
+	//CCEngineUtility::AddOnScreenDebugMessage(-1, 0.1f, FColor::Red,
+	//	FString::Printf(TEXT("ASCharacter::OnHealthChanged(%f, %f) -> bDied = %d"), Health, HealthDelta, bDied));
+	
+	// If the player is dead.
+	if (!bDied && Health <= 0.0f) {
+		bDied = true;
+		
+		// Stop all movement.
+		GetMovementComponent()->StopMovementImmediately();
+
+		// Disable all collisions.
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		// Detach the camera after death.
+		DetachFromControllerPendingDestroy();
+
+		// Destroy the pawn after 10 seconds.
+		SetLifeSpan(10.0f);
+	}
 }

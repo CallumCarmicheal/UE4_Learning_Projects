@@ -9,6 +9,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class ASWeapon;
+class USHealthComponent;
 
 UCLASS()
 class COOPGAME_API ASCharacter : public ACharacter
@@ -22,6 +23,14 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual FVector GetPawnViewLocation() const override;
 	
 protected: // Input Methods
 	void InputMoveForward(float Value);
@@ -43,6 +52,9 @@ protected: // Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USpringArmComponent* SpringArmComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USHealthComponent* HealthComp;
+	
 protected: // Properties
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player")
 	ASWeapon* CurrentWeapon;
@@ -78,13 +90,16 @@ protected: // Properties
 	 *		UPROPERTY(VisibleDefaultsOnly, Category = "Player") 
 	 */
 	float FOVDefault;
+
+	/**
+	 * If the pawn has died previously
+	 */
+	UPROPERTY(BlueprintReadOnly, Category = "Player")
+	bool bDied;
 	
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+public:	// Component delegate event Functions
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UFUNCTION()
+	void OnHealthChanged(USHealthComponent* HealthComponent, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
-	virtual FVector GetPawnViewLocation() const override;
 };

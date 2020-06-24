@@ -13,4 +13,5 @@ void CCEngineUtility::AddOnScreenDebugMessage(uint64 Key, float TimeToDisplay, F
 void CCEngineUtility::AddOnScreenDebugMessage(int32 Key, float TimeToDisplay, FColor DisplayColor,
 	const FString& DebugMessage, bool bNewerOnTop, const FVector2D& TextScale) {
 	GEngine->AddOnScreenDebugMessage(Key, TimeToDisplay, DisplayColor, DebugMessage, bNewerOnTop, TextScale);
+	//
 }
