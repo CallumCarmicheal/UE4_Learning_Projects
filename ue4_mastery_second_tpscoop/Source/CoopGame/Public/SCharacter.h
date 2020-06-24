@@ -5,11 +5,15 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
+class ASCharacter;
 
 class UCameraComponent;
 class USpringArmComponent;
 class ASWeapon;
 class USHealthComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnCharacterDiedSignature,
+	ASCharacter*, Character, const class UDamageType*, DamageType, class AController*, InstigatedBy, AActor*, DamageCauser);
 
 UCLASS()
 class COOPGAME_API ASCharacter : public ACharacter
@@ -102,4 +106,8 @@ public:	// Component delegate event Functions
 	UFUNCTION()
 	void OnHealthChanged(USHealthComponent* HealthComponent, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
+public: // Blueprint events
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnCharacterDiedSignature OnCharacterDied;
 };

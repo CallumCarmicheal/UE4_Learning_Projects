@@ -169,5 +169,8 @@ void ASCharacter::OnHealthChanged(USHealthComponent* HealthComponent, float Heal
 
 		// Destroy the pawn after 10 seconds.
 		SetLifeSpan(10.0f);
+
+		// Invoke the death event
+		this->OnCharacterDied.Broadcast(this, DamageType, InstigatedBy, DamageCauser);
 	}
 }
