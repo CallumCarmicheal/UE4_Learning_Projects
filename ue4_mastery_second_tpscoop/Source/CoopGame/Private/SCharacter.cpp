@@ -171,6 +171,7 @@ void ASCharacter::OnHealthChanged(USHealthComponent* HealthComponent, float Heal
 		SetLifeSpan(10.0f);
 
 		// Invoke the death event
-		this->OnCharacterDied.Broadcast(this, DamageType, InstigatedBy, DamageCauser);
+		OnCharacterDied(DamageType, InstigatedBy, DamageCauser);
+		this->OnCharacterDiedEvent.Broadcast(this, DamageType, InstigatedBy, DamageCauser);
 	}
 }

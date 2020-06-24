@@ -3,8 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CoopGame.h"
+
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
+
+
 class ASCharacter;
 
 class UCameraComponent;
@@ -108,6 +112,9 @@ public:	// Component delegate event Functions
 
 public: // Blueprint events
 
-	UPROPERTY(BlueprintAssignable, Category = "Events")
-	FOnCharacterDiedSignature OnCharacterDied;
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnCharacterDied(const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+	
+	UPROPERTY(VisibleAnywhere, BlueprintAssignable, Category = "Events")
+	FOnCharacterDiedSignature OnCharacterDiedEvent;
 };
