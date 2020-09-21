@@ -91,7 +91,7 @@ private:
 	UFUNCTION()
 	void OnRep_HitScanTrace();
 
-	void PlayImpactEffect(EPhysicalSurface SurfaceType, FVector TraceImpactPoint, FVector TraceFrom);
+	void PlayImpactEffect(EPhysicalSurface SurfaceType, FVector TraceImpactPoint);
 	
 public:
 	

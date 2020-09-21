@@ -41,6 +41,9 @@ ASWeapon::ASWeapon()
 	AutomaticFiring = true;
 
 	SetReplicates(true);
+
+	NetUpdateFrequency = 66.0f;
+	MinNetUpdateFrequency = 33.0f;
 }
 
 void ASWeapon::BeginPlay() {
@@ -75,13 +78,15 @@ void ASWeapon::Fire() {
 
 		// Particle "Target" Parameter
 		FVector TracerEndPoint = TraceEnd;
+
+		EPhysicalSurface SurfaceType = SurfaceType_Default;
 		
 		FHitResult Hit;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, CC_COLLISION_WEAPON, QueryParams)) {
 			// Hit object, Process Damage.
 			AActor* HitActor = Hit.GetActor();
 
-			EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+			SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
 
 			float ActualDamage = BaseDamage;
 			if (SurfaceType == CC_SURFACE_FLESHVULNERABLE) 
@@ -89,7 +94,7 @@ void ASWeapon::Fire() {
 			
 			UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, pOwner->GetInstigatorController(), this, DamageType);
 
-			
+			PlayImpactEffect(SurfaceType, Hit.ImpactPoint);
 			
 			TracerEndPoint = Hit.ImpactPoint;
 		}
@@ -106,6 +111,8 @@ void ASWeapon::Fire() {
 
 		if (GetLocalRole() == ROLE_Authority) {
 			HitScanTrace.TraceTo = TracerEndPoint;
+			HitScanTrace.SurfaceType = SurfaceType;
+
 		}
 		
 		// 
@@ -146,9 +153,10 @@ void ASWeapon::PlayFireEffects(const FVector TracerEndPoint) const {
 void ASWeapon::OnRep_HitScanTrace() {
 	// Play cosmetic effects
 	PlayFireEffects(HitScanTrace.TraceTo);
+	PlayImpactEffect(HitScanTrace.SurfaceType, HitScanTrace.TraceTo); 
 }
 
-void ASWeapon::PlayImpactEffect(EPhysicalSurface SurfaceType, FVector ImpactPoint, FVector TraceFrom) {
+void ASWeapon::PlayImpactEffect(EPhysicalSurface SurfaceType, FVector ImpactPoint) {
 	// Select a particle effect to play
 	UParticleSystem* SelectedEffect = nullptr;
 	switch (SurfaceType) {
@@ -164,7 +172,9 @@ void ASWeapon::PlayImpactEffect(EPhysicalSurface SurfaceType, FVector ImpactPoin
 
 	// Play the effect
 	if (SelectedEffect) {
-		FVector ShotDirection = ImpactPoint - TraceFrom;
+		FVector MuzzleLocation = MeshComp->GetSocketLocation(this->MuzzleSocketName);
+		
+		FVector ShotDirection = ImpactPoint - MuzzleLocation;
 		ShotDirection.Normalize();
 
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SelectedEffect, ImpactPoint, ShotDirection.Rotation());
