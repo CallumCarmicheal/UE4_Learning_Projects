@@ -17,6 +17,8 @@
 
 #include "Engine/World.h"
 
+#include "Net/UnrealNetwork.h"
+
 
 // Sets default values
 ASCharacter::ASCharacter() {
@@ -61,14 +63,16 @@ void ASCharacter::BeginPlay() {
 	if (FOVZoomed == 0)
 		FOVZoomed = FOVDefault - 30;
 
-	// Spawn a default weapon
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	if (GetLocalRole() == ROLE_Authority) {
+		// Spawn a default weapon
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	CurrentWeapon = static_cast<ASWeapon*>(GetWorld()->SpawnActor<AActor>(StarterWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams));
-	if (CurrentWeapon) {
-		CurrentWeapon->SetOwner(this);
-		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
+		CurrentWeapon = static_cast<ASWeapon*>(GetWorld()->SpawnActor<AActor>(StarterWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams));
+		if (CurrentWeapon) {
+			CurrentWeapon->SetOwner(this);
+			CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
+		}
 	}
 
 	// Attach our OnHealthChanged event
@@ -174,4 +178,10 @@ void ASCharacter::OnHealthChanged(USHealthComponent* HealthComponent, float Heal
 		OnCharacterDied(DamageType, InstigatedBy, DamageCauser);
 		this->OnCharacterDiedEvent.Broadcast(this, DamageType, InstigatedBy, DamageCauser);
 	}
+}
+
+void ASCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ASCharacter, CurrentWeapon);
 }

@@ -40,6 +40,8 @@ protected:
 
 	virtual FVector GetPawnViewLocation() const override;
 	
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 protected: // Input Methods
 	void InputMoveForward(float Value);
 	void InputMoveRight(float Value);
@@ -64,7 +66,7 @@ protected: // Components
 	USHealthComponent* HealthComp;
 	
 protected: // Properties
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player")
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = "Player")
 	ASWeapon* CurrentWeapon;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")

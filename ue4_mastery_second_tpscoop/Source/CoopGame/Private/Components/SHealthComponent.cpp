@@ -37,7 +37,5 @@ void USHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, 
 
 	// USHealthComponent*, HealthComp, float, Health, float, HealthDelta, const class UDamageType*, DamageType, class AController*, InstigatedBy, AActor*, DamageCauser
 	OnHealthChanged.Broadcast(this, Health, Damage, DamageType, InstigatedBy, DamageCauser);
-
-	
 }
 

@@ -11,6 +11,21 @@ class UDamageType;
 class MuzzleEffect;
 class UCameraShake;
 
+///
+/// Contains information of a single hitscan weapon linetrace
+///
+USTRUCT()
+struct FHitscanTrace {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+	TEnumAsByte<EPhysicalSurface> SurfaceType;
+
+	UPROPERTY()
+	FVector_NetQuantize TraceTo;
+};
+
 UCLASS()
 class COOPGAME_API ASWeapon : public AActor
 {
@@ -59,12 +74,24 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	bool AutomaticFiring;
 	
+protected: /* Overriden Methods for Netcode */
+	
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
 private:
 	FTimerHandle TimerHandle_TimeBetweenShots;
 	float fLastFireTime;
 
 	// Derived from rate of fire.
 	float fTimeBetweenShots;
+
+	UPROPERTY(ReplicatedUsing=OnRep_HitScanTrace)
+	FHitscanTrace HitScanTrace;
+
+	UFUNCTION()
+	void OnRep_HitScanTrace();
+
+	void PlayImpactEffect(EPhysicalSurface SurfaceType, FVector TraceImpactPoint, FVector TraceFrom);
 	
 public:
 	
@@ -78,6 +105,9 @@ protected:
 	virtual void BeginPlay() override;
 	
 	virtual void Fire();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerFire();
 
 	void PlayFireEffects(const FVector TracerEndPoint) const;
 };
