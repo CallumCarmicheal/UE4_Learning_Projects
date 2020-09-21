@@ -104,7 +104,7 @@ protected: // Properties
 	/**
 	 * If the pawn has died previously
 	 */
-	UPROPERTY(BlueprintReadOnly, Category = "Player")
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Player")
 	bool bDied;
 	
 public:	// Component delegate event Functions
