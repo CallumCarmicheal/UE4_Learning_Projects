@@ -12,7 +12,7 @@ public class CoopGame : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs; // IWYU 
         bEnforceIWYU = true;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "NavigationSystem" });
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
 		// Uncomment if you are using Slate UI
