@@ -7,6 +7,7 @@
 #include <Kismet\GameplayStatics.h>
 #include <NavigationPath.h>
 #include <NavigationSystem.h>
+#include <DrawDebugHelpers.h>
 
 // Sets default values
 ASTrackerBot::ASTrackerBot()
@@ -16,15 +17,21 @@ ASTrackerBot::ASTrackerBot()
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	MeshComp->SetCanEverAffectNavigation(false);
-
+	MeshComp->SetSimulatePhysics(true);
+	
 	RootComponent = MeshComp;
+
+	bUseVelocityChange = false;
+	MovementForce = 1000;
+	RequiredDistanceToTarget = 100;
 }
 
 // Called when the game starts or when spawned
 void ASTrackerBot::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	NextNavigationPoint = GetNextPathPoint();
 }
 
 UNavigationPath* ASTrackerBot::GetNavigationPath() {
@@ -43,7 +50,7 @@ FVector ASTrackerBot::GetNextPathPoint() {
 
 	// Return the next component in the path
 	if (Path->PathPoints.Num() > 1)
-		return Path->PathPoints[0];
+		return Path->PathPoints[1];
 
 	// There are not multiple points, return a direct vector to the target location
 	return GetActorLocation();
@@ -54,5 +61,25 @@ void ASTrackerBot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	const float DistanceToTarget = (GetActorLocation() - NextNavigationPoint).Size();
+	
+	if (DistanceToTarget <= RequiredDistanceToTarget) {
+		NextNavigationPoint = GetNextPathPoint();
+
+		DrawDebugString(GetWorld(), GetActorLocation(), "Target Reached");
+	}
+
+	else {
+		// Keep moving towards next target
+		FVector ForceDirection = NextNavigationPoint - GetActorLocation();
+		ForceDirection.Normalize();
+
+		ForceDirection *= MovementForce;
+		MeshComp->AddForce(ForceDirection, NAME_None, bUseVelocityChange);
+
+		DrawDebugDirectionalArrow(GetWorld(), GetActorLocation(), GetActorLocation() + ForceDirection, 32, FColor::Yellow, false, 0.0f, 0, 1.0f);
+	}
+
+	DrawDebugSphere(GetWorld(), NextNavigationPoint, 20, 12, FColor::Yellow, false, 0.0f, 1.0f);
 }
 

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -24,8 +24,23 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly)
 	UStaticMeshComponent* MeshComp;
 
+	UFUNCTION(BlueprintCallable)
 	FVector GetNextPathPoint();
+
+	UFUNCTION(BlueprintCallable)
 	UNavigationPath* GetNavigationPath();
+
+	UPROPERTY(BlueprintReadOnly, Category = "Tracker Bot")
+	FVector NextNavigationPoint;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Tracker Bot")
+	float MovementForce;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Tracker Bot")
+	bool bUseVelocityChange;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Tracker Bot")
+	float RequiredDistanceToTarget;
 	
 public:	
 	// Called every frame
