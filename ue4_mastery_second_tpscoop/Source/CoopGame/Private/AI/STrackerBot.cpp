@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "AI/STrackerBot.h"
+#include "Components/SHealthComponent.h"
 
 #include <GameFramework/Character.h>
 #include <Components/StaticMeshComponent.h>
@@ -18,9 +19,11 @@ ASTrackerBot::ASTrackerBot()
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	MeshComp->SetCanEverAffectNavigation(false);
 	MeshComp->SetSimulatePhysics(true);
-	
 	RootComponent = MeshComp;
 
+	HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));
+	HealthComp->OnHealthChanged.AddDynamic(this, &ASTrackerBot::HandleTakeDamage);
+	
 	bUseVelocityChange = false;
 	MovementForce = 1000;
 	RequiredDistanceToTarget = 100;
@@ -66,10 +69,13 @@ void ASTrackerBot::Tick(float DeltaTime)
 	if (DistanceToTarget <= RequiredDistanceToTarget) {
 		NextNavigationPoint = GetNextPathPoint();
 
-		DrawDebugString(GetWorld(), GetActorLocation(), "Target Reached");
+		DrawDebugString(GetWorld(), GetActorLocation(), "Target Reached", 0, FColor::White, 5);
 	}
 
 	else {
+		// TODO: Detect if the bot is stuck and then recalculate a path to the player.
+		// Calculate next waypoint, try to go to it. If it fails attempt to run a full nav simulation.
+		
 		// Keep moving towards next target
 		FVector ForceDirection = NextNavigationPoint - GetActorLocation();
 		ForceDirection.Normalize();
@@ -77,9 +83,17 @@ void ASTrackerBot::Tick(float DeltaTime)
 		ForceDirection *= MovementForce;
 		MeshComp->AddForce(ForceDirection, NAME_None, bUseVelocityChange);
 
-		DrawDebugDirectionalArrow(GetWorld(), GetActorLocation(), GetActorLocation() + ForceDirection, 32, FColor::Yellow, false, 0.0f, 0, 1.0f);
+		DrawDebugDirectionalArrow(GetWorld(), GetActorLocation(), GetActorLocation() + ForceDirection, 32, FColor::Magenta, false, 0.0f, 0, 3.0f);
 	}
 
-	DrawDebugSphere(GetWorld(), NextNavigationPoint, 20, 12, FColor::Yellow, false, 0.0f, 1.0f);
+	DrawDebugSphere(GetWorld(), NextNavigationPoint, 20, 12, FColor::Purple, false, 0.0f, 1.0f);
 }
 
+void ASTrackerBot::HandleTakeDamage(USHealthComponent* HealthComponent, float Health, float HealthDelta,
+	const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser) {
+	// TODO: Pulse material on hit
+
+	// Explode on HP == 0
+
+	UE_LOG(LogTemp, Log, TEXT("Health %s of %s"), *FString::SanitizeFloat(Health), *GetName());
+}
