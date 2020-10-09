@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "AI/STrackerBot.h"
 #include "Components/SHealthComponent.h"
@@ -9,6 +9,8 @@
 #include <NavigationPath.h>
 #include <NavigationSystem.h>
 #include <DrawDebugHelpers.h>
+#include "Materials/MaterialInstanceDynamic.h"
+// #include <Materials\MaterialInstanceDynamic.h>
 
 // Sets default values
 ASTrackerBot::ASTrackerBot()
@@ -27,6 +29,9 @@ ASTrackerBot::ASTrackerBot()
 	bUseVelocityChange = false;
 	MovementForce = 1000;
 	RequiredDistanceToTarget = 100;
+
+	ExplosionDamage = 40;
+	ExplosionRadius = 200;
 }
 
 // Called when the game starts or when spawned
@@ -49,11 +54,21 @@ UNavigationPath* ASTrackerBot::GetNavigationPath() {
 }
 
 FVector ASTrackerBot::GetNextPathPoint() {
-	UNavigationPath* Path = GetNavigationPath();
+	// Get the target player
+	ACharacter* PlayerPawn = UGameplayStatics::GetPlayerCharacter(this, 0);
 
+	// Get the navigation path
+	UNavigationPath* Path = UNavigationSystemV1::FindPathToActorSynchronously(this, GetActorLocation(), PlayerPawn);
+	
 	// Return the next component in the path
-	if (Path->PathPoints.Num() > 1)
+	if (Path && Path->PathPoints.Num() > 1)
 		return Path->PathPoints[1];
+	
+	UE_LOG(LogTemp, Log, TEXT("%d points for %s, P Vec: %s"), 
+		(!Path ? -1 : Path->PathPoints.Num()), 
+		*GetName(), 
+		*PlayerPawn->GetActorLocation().ToString()
+	);
 
 	// There are not multiple points, return a direct vector to the target location
 	return GetActorLocation();
@@ -83,7 +98,8 @@ void ASTrackerBot::Tick(float DeltaTime)
 		ForceDirection *= MovementForce;
 		MeshComp->AddForce(ForceDirection, NAME_None, bUseVelocityChange);
 
-		DrawDebugDirectionalArrow(GetWorld(), GetActorLocation(), GetActorLocation() + ForceDirection, 32, FColor::Magenta, false, 0.0f, 0, 3.0f);
+		DrawDebugDirectionalArrow(GetWorld(), GetActorLocation(), GetActorLocation() + ForceDirection, 32, 
+			FColor::Magenta, false, 0.0f, 0, 3.0f);
 	}
 
 	DrawDebugSphere(GetWorld(), NextNavigationPoint, 20, 12, FColor::Purple, false, 0.0f, 1.0f);
@@ -91,9 +107,45 @@ void ASTrackerBot::Tick(float DeltaTime)
 
 void ASTrackerBot::HandleTakeDamage(USHealthComponent* HealthComponent, float Health, float HealthDelta,
 	const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser) {
-	// TODO: Pulse material on hit
 
+	// Create a dynamic material instance
+	if (MatInst == nullptr) {
+		MatInst = MeshComp->CreateAndSetMaterialInstanceDynamicFromMaterial(0, MeshComp->GetMaterial(0));
+		UE_LOG(LogTemp, Log, TEXT("Tracker %s: Created a new material instance"), *GetName());
+	}
+		
+	// If the material is set/created then we want to set the world time
+	if (MatInst) {
+		MatInst->SetScalarParameterValue("LastTimeDamageTaken", GetWorld()->TimeSeconds);
+		UE_LOG(LogTemp, Log, TEXT("Tracker %s: Set the value of LastTimeDamageTaken"), *GetName());
+	}
+	
 	// Explode on HP == 0
+	if (Health <= 0.00f) 
+		SelfDestruct();
 
 	UE_LOG(LogTemp, Log, TEXT("Health %s of %s"), *FString::SanitizeFloat(Health), *GetName());
+}
+
+void ASTrackerBot::SelfDestruct() {
+	if (bExploded) return;
+	bExploded = true;
+
+	// If we have an effect spawn it.
+	if (ExplosionEffect)
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
+
+	// Ignore ourself from the damage
+	TArray<AActor*> IgnoredActors;
+	IgnoredActors.Add(this);
+
+	// Apply damage
+	UGameplayStatics::ApplyRadialDamage(this,
+		ExplosionDamage, GetActorLocation(), ExplosionRadius, nullptr,
+		IgnoredActors, this, GetInstigatorController(), true);
+
+	DrawDebugSphere(GetWorld(), GetActorLocation(), ExplosionRadius, 12, FColor::Red, false, 2.0f, 0, 1.0f);
+	
+	// Delete actor immediately.
+	Destroy();
 }

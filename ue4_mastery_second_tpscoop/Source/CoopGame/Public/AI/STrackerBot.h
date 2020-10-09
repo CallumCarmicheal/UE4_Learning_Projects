@@ -6,14 +6,17 @@
 #include "GameFramework/Pawn.h"
 #include "STrackerBot.generated.h"
 
-class UNavigationPath;
 class USHealthComponent;
+class UNavigationPath;
+class UMaterialInstanceDynamic;
+class UParticleSystem;
 
 UCLASS()
 class COOPGAME_API ASTrackerBot : public APawn
 {
 	GENERATED_BODY()
-
+	
+	
 public:
 	// Sets default values for this pawn's properties
 	ASTrackerBot();
@@ -24,6 +27,8 @@ protected:
 
 	UFUNCTION()
 	void HandleTakeDamage(USHealthComponent* HealthComponent, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
+	void SelfDestruct();
 	
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
@@ -49,6 +54,23 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Tracker Bot")
 	float RequiredDistanceToTarget;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Tracker Bot")
+	UParticleSystem* ExplosionEffect;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Tracker Bot")
+	bool bExploded;
+	
+	/// <summary>
+	/// Dynamic Material to pulse on damage
+	/// </summary>
+	UMaterialInstanceDynamic* MatInst;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Tracker Bot")
+	float ExplosionRadius;
+	
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Tracker Bot")
+	float ExplosionDamage;
 	
 public:	
 	// Called every frame
