@@ -10,9 +10,8 @@ USHealthComponent::USHealthComponent()
 {
 	DefaultHealth = 100;
 
-	SetIsReplicated(true);
+	SetIsReplicatedByDefault(true);
 }
-
 
 // Called when the game starts
 void USHealthComponent::BeginPlay()
