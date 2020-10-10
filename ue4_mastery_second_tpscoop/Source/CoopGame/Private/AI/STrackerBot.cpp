@@ -2,6 +2,7 @@
 
 #include "AI/STrackerBot.h"
 #include "Components/SHealthComponent.h"
+#include "SCharacter.h"
 
 #include <GameFramework/Character.h>
 #include <Components/StaticMeshComponent.h>
@@ -9,8 +10,8 @@
 #include <NavigationPath.h>
 #include <NavigationSystem.h>
 #include <DrawDebugHelpers.h>
-#include "Materials/MaterialInstanceDynamic.h"
-// #include <Materials\MaterialInstanceDynamic.h>
+#include <Materials/MaterialInstanceDynamic.h>
+#include <Components/SphereComponent.h>
 
 // Sets default values
 ASTrackerBot::ASTrackerBot()
@@ -23,6 +24,13 @@ ASTrackerBot::ASTrackerBot()
 	MeshComp->SetSimulatePhysics(true);
 	RootComponent = MeshComp;
 
+	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
+	SphereComp->SetSphereRadius(200);
+	SphereComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	SphereComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+	SphereComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	SphereComp->SetupAttachment(RootComponent);
+
 	HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));
 	HealthComp->OnHealthChanged.AddDynamic(this, &ASTrackerBot::HandleTakeDamage);
 	
@@ -32,6 +40,8 @@ ASTrackerBot::ASTrackerBot()
 
 	ExplosionDamage = 40;
 	ExplosionRadius = 200;
+
+	bFlashInSectionsOnSelfDestruct = false;
 }
 
 // Called when the game starts or when spawned
@@ -148,4 +158,28 @@ void ASTrackerBot::SelfDestruct() {
 	
 	// Delete actor immediately.
 	Destroy();
+}
+
+void ASTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor) {
+	if (bStartedSelfDestruction) return;
+	
+	ASCharacter* PlayerPawn = Cast<ASCharacter>(OtherActor);
+
+	if (PlayerPawn) {
+		// We have overlapped the player
+		bStartedSelfDestruction = true;
+
+		// Set material to flash entirely if set in config
+		if (!MatInst) 
+			MatInst = MeshComp->CreateAndSetMaterialInstanceDynamicFromMaterial(0, MeshComp->GetMaterial(0));
+		
+		MatInst->SetScalarParameterValue("FlashInSectionsOnDamage", bFlashInSectionsOnSelfDestruct);
+		
+		// Start self destruction sequence.
+		GetWorldTimerManager().SetTimer(TimerHandle_SelfDamage, this, &ASTrackerBot::DamageSelf, 0.5f, true, 0.0f);
+	}
+}
+
+void ASTrackerBot::DamageSelf() {
+	UGameplayStatics::ApplyDamage(this, 20, GetInstigatorController(), this, nullptr);
 }

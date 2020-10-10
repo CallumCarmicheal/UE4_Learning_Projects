@@ -10,6 +10,7 @@ class USHealthComponent;
 class UNavigationPath;
 class UMaterialInstanceDynamic;
 class UParticleSystem;
+class USphereComponent;
 
 UCLASS()
 class COOPGAME_API ASTrackerBot : public APawn
@@ -26,9 +27,18 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void HandleTakeDamage(USHealthComponent* HealthComponent, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+	void HandleTakeDamage(USHealthComponent* HealthComponent, float Health, float HealthDelta, 
+		const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 	void SelfDestruct();
+
+	UFUNCTION(BlueprintCallable)
+	FVector GetNextPathPoint();
+
+	UFUNCTION(BlueprintCallable)
+	UNavigationPath* GetNavigationPath();
+	
+	void DamageSelf();
 	
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
@@ -37,12 +47,13 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 	UStaticMeshComponent* MeshComp;
 
-	UFUNCTION(BlueprintCallable)
-	FVector GetNextPathPoint();
-
-	UFUNCTION(BlueprintCallable)
-	UNavigationPath* GetNavigationPath();
-
+	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	USphereComponent* SphereComp;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Tracker Bot")
+	UParticleSystem* ExplosionEffect;
+	
+protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Tracker Bot")
 	FVector NextNavigationPoint;
 
@@ -55,25 +66,30 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Tracker Bot")
 	float RequiredDistanceToTarget;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Tracker Bot")
-	UParticleSystem* ExplosionEffect;
-
 	UPROPERTY(BlueprintReadOnly, Category = "Tracker Bot")
 	bool bExploded;
-	
-	/// <summary>
-	/// Dynamic Material to pulse on damage
-	/// </summary>
-	UMaterialInstanceDynamic* MatInst;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Tracker Bot")
+	bool bFlashInSectionsOnSelfDestruct;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Tracker Bot")
 	float ExplosionRadius;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Tracker Bot")
 	float ExplosionDamage;
+
+	/// <summary>
+	/// Dynamic Material to pulse on damage
+	/// </summary>
+	UMaterialInstanceDynamic* MatInst;
+
+	bool bStartedSelfDestruction;
+	FTimerHandle TimerHandle_SelfDamage;
 	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };
+

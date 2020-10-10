@@ -75,7 +75,6 @@ protected:
 	bool AutomaticFiring;
 	
 protected: /* Overriden Methods for Netcode */
-	
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 private:
@@ -94,7 +93,6 @@ private:
 	void PlayImpactEffect(EPhysicalSurface SurfaceType, FVector TraceImpactPoint);
 	
 public:
-	
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	virtual void StartFire();
 
